@@ -6851,3 +6851,18 @@ textarea.form-control {
 @media (max-width: 640px) {
   .hero-video-container { aspect-ratio: 16 / 9; }
 }
+
+/* Keep the complete film visible while fitting the hero into laptop screens. */
+@media (min-width: 641px) {
+  .hero-video-container {
+    height: min(64vh, 56.25vw);
+    aspect-ratio: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-video-container {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+}

@@ -245,9 +245,14 @@ function renderApp() {
 
   const newVideo = document.getElementById('hero-bgv');
   if (newVideo) {
+    // A modest speed increase keeps the product transitions lively while
+    // preserving the source film's natural motion.
+    newVideo.defaultPlaybackRate = 1.15;
+    newVideo.playbackRate = 1.15;
     if (videoPosition !== null && Number.isFinite(videoPosition)) {
       newVideo.addEventListener('loadedmetadata', () => {
         try { newVideo.currentTime = videoPosition; } catch {}
+        newVideo.playbackRate = 1.15;
       }, { once: true });
     }
     const videoSource = newVideo.querySelector('source');
