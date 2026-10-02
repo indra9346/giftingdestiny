@@ -6641,9 +6641,9 @@ textarea.form-control {
 
   .header-main { padding-block: 0.55rem; }
   .header-container { gap: 0.4rem; }
-  .brand-logo { min-width: 0; gap: 0.45rem; }
-  .brand-logo-img { width: 40px; height: 40px; }
-  .brand-text { min-width: 0; }
+  .brand-logo { flex: 1 1 auto; min-width: 0; gap: 0.45rem; }
+  .brand-logo .brand-logo-img { flex: 0 0 40px; width: 40px; height: 40px; }
+  .brand-text { flex: 1 1 auto; min-width: 0; }
   .brand-title { font-size: clamp(0.96rem, 4.1vw, 1.18rem); white-space: nowrap; }
   .brand-tagline { font-size: clamp(0.52rem, 2.3vw, 0.66rem); white-space: nowrap; letter-spacing: 0; }
   .header-actions { flex-shrink: 0; gap: 0.12rem; }
@@ -6651,6 +6651,7 @@ textarea.form-control {
   .header-actions .cart-action-btn { padding: 0.38rem; }
   .header-actions .mobile-menu-btn { min-width: 34px; min-height: 38px; padding: 0.35rem; align-items: center; justify-content: center; }
   .header-actions .action-icon svg { width: 21px; height: 21px; }
+  .collection-slider-section { overflow: clip; }
 
   .hero-video-container { aspect-ratio: 3.06 / 1; }
   .hero-video-content-wrap { padding: 0.75rem 1rem; }
@@ -6672,7 +6673,7 @@ textarea.form-control {
 
 @media (max-width: 360px) {
   .header-container { gap: 0.25rem; }
-  .brand-logo-img { width: 34px; height: 34px; }
+  .brand-logo .brand-logo-img { flex-basis: 34px; width: 34px; height: 34px; }
   .brand-logo { gap: 0.35rem; }
   .brand-title { font-size: 0.9rem; }
   .brand-tagline { display: none; }
@@ -6923,6 +6924,32 @@ main > * { min-width: 0; max-width: 100%; }
   .pdp-product-title,
   .product-breadcrumb,
   .product-detail-page p { overflow-wrap: anywhere; }
+
+  .gd-story-grid,
+  .gd-story-grid > *,
+  .gd-story-content,
+  .gd-story-visual-wrap,
+  .gd-story-section .container,
+  .corp-banner-content,
+  .contact-info-card,
+  .contact-form {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .gd-story-actions,
+  .story-features-row,
+  .corp-action-row {
+    flex-wrap: wrap;
+  }
+
+  .gd-story-actions > *,
+  .story-feat-item,
+  .corp-action-row > * {
+    min-width: 0;
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 640px) {
