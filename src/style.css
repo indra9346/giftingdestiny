@@ -6855,8 +6855,8 @@ textarea.form-control {
 /* Keep the complete film visible while fitting the hero into laptop screens. */
 @media (min-width: 641px) {
   .hero-video-container {
-    height: min(64vh, 56.25vw);
-    aspect-ratio: auto;
+    height: auto;
+    aspect-ratio: 16 / 9;
   }
 }
 
@@ -6865,4 +6865,70 @@ textarea.form-control {
     height: auto;
     aspect-ratio: 16 / 9;
   }
+}
+
+/* Site-wide mobile containment: avoid sideways page drift and let grid/flex
+   children shrink instead of pushing the viewport wider than the device. */
+html,
+body {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
+
+#app,
+main {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+main > * { min-width: 0; max-width: 100%; }
+
+@media (max-width: 768px) {
+  body,
+  [data-theme="light"] body {
+    background-attachment: scroll;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding-inline: clamp(12px, 4vw, 24px);
+  }
+
+  .product-detail-page,
+  .product-detail-page > .container,
+  .product-detail-grid,
+  .product-gallery-section,
+  .product-info-section,
+  .main-image-container {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .product-detail-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  .pdp-trust-cards {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  }
+
+  .pdp-category-tag { flex-wrap: wrap; }
+  .pdp-product-title,
+  .product-breadcrumb,
+  .product-detail-page p { overflow-wrap: anywhere; }
+}
+
+@media (max-width: 640px) {
+  .hero-video-container {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+  .hero-video-element { object-fit: cover; }
 }
