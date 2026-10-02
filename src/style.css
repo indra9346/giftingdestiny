@@ -6622,6 +6622,65 @@ textarea.form-control {
   .section { padding-block: 3rem; }
 }
 
+/* Compact phone layout: prevent the branding/actions row from forcing a
+   wider page, and size the collection carousel to the available viewport. */
+@media (max-width: 640px) {
+  html, body, #app {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  body { overflow-x: clip; }
+
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding-inline: 1rem;
+  }
+
+  .header-main { padding-block: 0.55rem; }
+  .header-container { gap: 0.4rem; }
+  .brand-logo { min-width: 0; gap: 0.45rem; }
+  .brand-logo-img { width: 40px; height: 40px; }
+  .brand-text { min-width: 0; }
+  .brand-title { font-size: clamp(0.96rem, 4.1vw, 1.18rem); white-space: nowrap; }
+  .brand-tagline { font-size: clamp(0.52rem, 2.3vw, 0.66rem); white-space: nowrap; letter-spacing: 0; }
+  .header-actions { flex-shrink: 0; gap: 0.12rem; }
+  .header-actions .action-btn { min-width: 34px; padding: 0.35rem; }
+  .header-actions .cart-action-btn { padding: 0.38rem; }
+  .header-actions .mobile-menu-btn { min-width: 34px; min-height: 38px; padding: 0.35rem; align-items: center; justify-content: center; }
+  .header-actions .action-icon svg { width: 21px; height: 21px; }
+
+  .hero-video-container { aspect-ratio: 3.06 / 1; }
+  .hero-video-content-wrap { padding: 0.75rem 1rem; }
+  .hero-video-cta-row { display: grid; grid-template-columns: 1fr; width: min(100%, 360px); margin-inline: auto; gap: 0.65rem; }
+  .hero-video-cta-row .btn { width: 100%; min-height: 46px; padding: 0.72rem 0.9rem; justify-content: center; }
+
+  .collection-slider-section { padding-block: 2.5rem; }
+  .collection-slider-header { margin-bottom: 1.5rem; padding-inline: 0.25rem; }
+  .collection-slider-header .section-title {
+    max-width: 100%;
+    font-size: clamp(1.55rem, 6.5vw, 2.1rem);
+    line-height: 1.18;
+    text-wrap: balance;
+  }
+  .collection-cards-track { gap: 0.85rem; padding-inline: 0.4rem; scroll-padding-inline: 0.4rem; }
+  .collection-slide-card { flex-basis: min(280px, calc(100vw - 3rem)); }
+  .slider-nav-arrow { width: 40px; height: 40px; }
+}
+
+@media (max-width: 360px) {
+  .header-container { gap: 0.25rem; }
+  .brand-logo-img { width: 34px; height: 34px; }
+  .brand-logo { gap: 0.35rem; }
+  .brand-title { font-size: 0.9rem; }
+  .brand-tagline { display: none; }
+  .header-actions { gap: 0; }
+  .header-actions .action-btn { min-width: 31px; padding: 0.28rem; }
+  .header-actions .mobile-menu-btn { min-width: 31px; }
+}
+
 /* Keep catalogue copy readable on the white collection background. */
 .catalog-section .catalog-header .section-title {
   color: #1e293b;
