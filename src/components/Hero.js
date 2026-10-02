@@ -12,7 +12,7 @@ export function renderHero() {
           preload="auto"
           aria-label="Gifting Destiny brand film"
         >
-          <source src="/gifting-destiny-extended-v2.mp4" type="video/mp4" />
+          <source src="/gifting-destiny-hd-promo-v2.mp4" type="video/mp4" />
         </video>
       </div>
       <div class="hero-video-content-wrap">
