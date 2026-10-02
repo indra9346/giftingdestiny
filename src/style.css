@@ -6762,3 +6762,60 @@ textarea.form-control {
   .hero-video-cta-row { display: grid; grid-template-columns: 1fr; width: min(100%, 360px); margin-inline: auto; }
   .hero-video-cta-row .btn { width: 100%; justify-content: center; }
 }
+
+/* Keep catalogue cards and their actions inside narrow phone columns. */
+@media (max-width: 640px) {
+  .products-grid-4col,
+  .related-grid-4col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    min-width: 0;
+  }
+
+  .product-card,
+  .product-card-body,
+  .product-card-actions { min-width: 0; }
+
+  .product-card-body { padding: 0.75rem; }
+  .product-card-status {
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.55rem;
+    font-size: 0.7rem;
+  }
+  .stock-indicator { white-space: nowrap; }
+  .custom-ready { overflow-wrap: anywhere; }
+
+  .product-card-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.45rem;
+  }
+  .product-card-actions .btn-view-details,
+  .product-card-actions .btn-buy-now {
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    flex: 1 1 auto;
+    padding: 0.55rem 0.5rem;
+    font-size: 0.82rem;
+    white-space: normal;
+  }
+
+  .floating-whatsapp-pill {
+    width: 46px;
+    min-width: 46px;
+    height: 46px;
+    right: max(12px, env(safe-area-inset-right));
+    bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  .floating-whatsapp-pill .whatsapp-icon { width: 23px; height: 23px; }
+}
+
+@media (max-width: 360px) {
+  .products-grid-4col,
+  .related-grid-4col { gap: 0.55rem; }
+  .product-card-body { padding: 0.6rem; }
+  .product-card-title { font-size: 0.88rem; }
+}
