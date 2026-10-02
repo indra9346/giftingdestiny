@@ -20,6 +20,8 @@ import confetti from 'canvas-confetti';
 
 const GD_PHONE = '918660940018'; // Verified from live site footer in Pic 4
 let collectionAutoScrollFrame = null;
+let heroHeaderObserver = null;
+let heroViewportResizeHandler = null;
 
 function openCartOrderWhatsApp() {
   const items = store.state.cart;
@@ -245,6 +247,27 @@ function renderApp() {
 
   const newVideo = document.getElementById('hero-bgv');
   if (newVideo) {
+    const header = document.querySelector('.site-header');
+    const fitHeroToViewport = () => {
+      if (!header || !document.getElementById('hero-bgv')) return;
+      const viewportHeight = window.visualViewport?.height || window.innerHeight;
+      const availableHeight = Math.max(320, Math.floor(viewportHeight - header.getBoundingClientRect().height));
+      document.documentElement.style.setProperty('--hero-viewport-height', `${availableHeight}px`);
+    };
+    fitHeroToViewport();
+    heroHeaderObserver?.disconnect();
+    if (header && 'ResizeObserver' in window) {
+      heroHeaderObserver = new ResizeObserver(fitHeroToViewport);
+      heroHeaderObserver.observe(header);
+    }
+    if (heroViewportResizeHandler) {
+      window.removeEventListener('resize', heroViewportResizeHandler);
+      window.visualViewport?.removeEventListener('resize', heroViewportResizeHandler);
+    }
+    heroViewportResizeHandler = fitHeroToViewport;
+    window.addEventListener('resize', heroViewportResizeHandler, { passive: true });
+    window.visualViewport?.addEventListener('resize', heroViewportResizeHandler, { passive: true });
+
     // A modest speed increase keeps the product transitions lively while
     // preserving the source film's natural motion.
     newVideo.defaultPlaybackRate = 1.15;
