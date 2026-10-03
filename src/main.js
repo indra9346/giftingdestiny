@@ -82,44 +82,61 @@ function animateProductIntoBag(source, product) {
   };
 }
 
-function bindProductImageFallbacks() {
-  document.querySelectorAll('.product-card-img, #pdp-main-image, .pdp-thumbnails-strip img').forEach(image => {
-    if (image.dataset.fallbackBound) return;
-    image.dataset.fallbackBound = 'true';
-    image.addEventListener('error', () => {
-      const productId = image.closest('[data-product-id]')?.dataset.productId
-        || (image.id === 'pdp-main-image' || image.closest('.pdp-thumbnails-strip') ? store.state.selectedProductId : null);
-      const product = csvProducts.find(item => item.id === productId);
-      const options = [...new Set([
-        ...(Array.isArray(product?.images) ? product.images : []),
-        product?.secondaryImage,
-        product?.primaryImage
-      ].filter(Boolean))];
-      const current = image.currentSrc || image.src;
-      const failed = new Set(JSON.parse(image.dataset.failedImageUrls || '[]'));
-      failed.add(current);
-      image.dataset.failedImageUrls = JSON.stringify([...failed]);
-      const next = options.find(url => !failed.has(new URL(url, window.location.href).href));
-
-      if (next) {
-        image.src = next;
-        return;
-      }
-
-      const thumbnail = image.closest('.pdp-thumb-btn');
-      if (thumbnail) {
-        thumbnail.hidden = true;
-        return;
-      }
-
-      const fallback = document.createElement('div');
-      fallback.className = 'product-image-fallback';
-      fallback.setAttribute('role', 'img');
-      fallback.setAttribute('aria-label', `Photo unavailable for ${product?.name || image.alt || 'this product'}`);
-      fallback.textContent = 'Product photo unavailable';
-      image.replaceWith(fallback);
-    }, { once: false });
+function bindSiteImageHandling() {
+  // Decode off the main thread where supported, and let the browser defer images
+  // outside the first viewport. Keep branding and lead product photography eager.
+  document.querySelectorAll('img').forEach(image => {
+    image.decoding = 'async';
+    const isLeadImage = image.closest('.site-header, .hero-section, .hero-video-section')
+      || image.id === 'pdp-main-image'
+      || image.id === 'qv-main-img';
+    if (!image.hasAttribute('loading')) image.loading = isLeadImage ? 'eager' : 'lazy';
+    if (isLeadImage) image.fetchPriority = 'high';
   });
+
+  // Capture image errors so this also covers images created later (for example,
+  // search suggestions and modal contents), not just the initial page markup.
+  if (document.documentElement.dataset.siteImageErrorsBound) return;
+  document.documentElement.dataset.siteImageErrorsBound = 'true';
+  document.addEventListener('error', event => {
+    const image = event.target;
+    if (!(image instanceof HTMLImageElement) || image.dataset.siteImageFailed === 'true') return;
+
+    const productId = image.closest('[data-product-id]')?.dataset.productId
+      || (image.id === 'pdp-main-image' || image.closest('.pdp-thumbnails-strip') ? store.state.selectedProductId : null);
+    const product = csvProducts.find(item => item.id === productId);
+    const options = [...new Set([
+      ...(Array.isArray(product?.images) ? product.images : []),
+      product?.secondaryImage,
+      product?.primaryImage
+    ].filter(Boolean))];
+    const failed = new Set(JSON.parse(image.dataset.failedImageUrls || '[]'));
+    failed.add(image.currentSrc || image.src);
+    image.dataset.failedImageUrls = JSON.stringify([...failed]);
+    const next = options.find(url => {
+      try { return !failed.has(new URL(url, window.location.href).href); } catch { return false; }
+    });
+
+    if (next) {
+      image.src = next;
+      return;
+    }
+
+    image.dataset.siteImageFailed = 'true';
+    const thumbnail = image.closest('.pdp-thumb-btn');
+    if (thumbnail) {
+      thumbnail.hidden = true;
+      return;
+    }
+
+    const fallback = document.createElement('div');
+    fallback.className = 'product-image-fallback site-image-fallback';
+    fallback.setAttribute('role', 'img');
+    fallback.setAttribute('aria-label', `Photo unavailable for ${product?.name || image.alt || 'this item'}`);
+    fallback.innerHTML = '<span class="site-image-fallback-icon" aria-hidden="true">▧</span><span class="site-image-fallback-label"></span>';
+    fallback.querySelector('.site-image-fallback-label').textContent = product?.name || image.alt || 'Product photo unavailable';
+    image.replaceWith(fallback);
+  }, true);
 }
 
 function readPdpPersonalization() {
@@ -243,7 +260,7 @@ function renderApp() {
   `;
 
   bindEvents();
-  bindProductImageFallbacks();
+  bindSiteImageHandling();
 
   const newVideo = document.getElementById('hero-bgv');
   if (newVideo) {
