@@ -2657,6 +2657,64 @@ textarea.form-control {
 .modal-card .btn-whatsapp-order { color: #fff; }
 .floating-whatsapp-pill .whatsapp-icon { width: 24px; height: 24px; }
 
+.modal-card.modal-quickview {
+  max-width: 780px;
+}
+.quickview-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+.quickview-img-wrap img {
+  width: 100%;
+  height: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid #e2e8f0;
+}
+.quickview-cat {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #800020;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.35rem;
+}
+.quickview-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: #0f172a;
+  line-height: 1.25;
+  margin-bottom: 0.5rem;
+}
+.quickview-stock {
+  font-size: 0.8rem;
+  color: #166534;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.quickview-desc {
+  font-size: 0.88rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+.quickview-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.quickview-actions .btn {
+  width: 100%;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+}
+
 .modal-close-btn {
   position: absolute;
   top: 1rem;
@@ -4968,18 +5026,20 @@ textarea.form-control {
 }
 
 .cart-drawer {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 440px;
-  max-width: 90%;
+  width: 460px;
+  max-width: 100vw;
   background: #ffffff;
   box-shadow: -10px 0 40px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-x: hidden;
+  z-index: 1000;
 }
 
 .cart-drawer-overlay.open .cart-drawer {
@@ -5979,12 +6039,12 @@ textarea.form-control {
 }
 
 .enquiry-drawer {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   width: 520px;
-  max-width: 95%;
+  max-width: 100vw;
   background: #ffffff;
   box-shadow: -15px 0 50px rgba(0, 0, 0, 0.25);
   display: flex;
@@ -5992,126 +6052,183 @@ textarea.form-control {
   transform: translateX(100%);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 1000;
 }
 
 .enquiry-drawer-overlay.open .enquiry-drawer {
   transform: translateX(0);
 }
 
+.enquiry-drawer::-webkit-scrollbar,
+.cart-drawer::-webkit-scrollbar,
+.modal-card::-webkit-scrollbar {
+  width: 6px;
+}
+.enquiry-drawer::-webkit-scrollbar-track,
+.cart-drawer::-webkit-scrollbar-track,
+.modal-card::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+.enquiry-drawer::-webkit-scrollbar-thumb,
+.cart-drawer::-webkit-scrollbar-thumb,
+.modal-card::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
 .enquiry-drawer-header {
-  padding: 1.5rem 1.75rem;
+  padding: 1.25rem 1.5rem;
   border-bottom: 1px solid #e2e8f0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: #faf7f2;
+  gap: 0.75rem;
+  min-width: 0;
 }
 
 .drawer-title-group {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.75rem;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .enquiry-header-icon {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
+  flex-shrink: 0;
 }
 
 .enquiry-drawer-title {
   font-family: var(--font-serif);
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #0f172a;
+  line-height: 1.25;
+  margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .enquiry-drawer-subtitle {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: #64748b;
   display: block;
+  line-height: 1.3;
+  margin-top: 0.15rem;
+  overflow-wrap: anywhere;
 }
 
 .enquiry-close-btn {
   background: transparent;
   border: none;
-  font-size: 2rem;
+  font-size: 1.75rem;
   cursor: pointer;
   color: #64748b;
   line-height: 1;
+  padding: 0.25rem;
+  min-width: 36px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .enquiry-drawer-body {
-  padding: 1.75rem;
+  padding: 1.5rem;
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .enquiry-wa-banner {
   background: #f0fdf4;
   border: 1px solid #bbf7d0;
   border-radius: var(--radius-md);
-  padding: 1.25rem;
-  margin-bottom: 2rem;
+  padding: 1rem 1.15rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .wa-banner-text strong {
   color: #166534;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   display: block;
   margin-bottom: 0.25rem;
+  word-break: break-word;
 }
 
 .wa-banner-text p {
   color: #15803d;
-  font-size: 0.82rem;
-  margin-bottom: 0.85rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 .btn-wa-banner {
   background: #25D366;
   color: #ffffff;
   border: none;
-  padding: 0.65rem 1.25rem;
+  padding: 0.65rem 1.15rem;
   border-radius: var(--radius-sm);
   font-weight: 700;
   font-size: 0.88rem;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   text-decoration: none;
   box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
 }
 
 .enquiry-styled-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-section-label {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: 800;
   color: #800020;
   border-bottom: 1px solid #fee2e2;
   padding-bottom: 0.35rem;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .form-row-2col {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-field {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.35rem;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-field label {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #334155;
+  line-height: 1.3;
 }
 
 .form-field .required {
@@ -6122,12 +6239,16 @@ textarea.form-control {
   border: 1.5px solid #cbd5e1;
   border-radius: var(--radius-sm);
   padding: 0.65rem 0.85rem;
-  font-size: 0.92rem;
+  font-size: 16px;
   color: #0f172a;
   outline: none;
   font-family: inherit;
   background: #ffffff;
   transition: all 0.2s ease;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .form-styled-input:focus, .form-styled-select:focus, .form-styled-textarea:focus {
@@ -6139,18 +6260,21 @@ textarea.form-control {
   width: 100%;
   padding: 0.95rem;
   font-size: 1rem;
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 .enquiry-security-notice {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
   padding: 0.85rem;
   background: #f8fafc;
   border-radius: var(--radius-sm);
   font-size: 0.75rem;
   color: #64748b;
   text-align: center;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 /* ==========================================================================
@@ -6714,6 +6838,336 @@ textarea.form-control {
   .collection-cards-track { gap: 0.85rem; padding-inline: 0.4rem; scroll-padding-inline: 0.4rem; }
   .collection-slide-card { flex-basis: min(280px, calc(100vw - 3rem)); }
   .slider-nav-arrow { width: 40px; height: 40px; }
+
+  /* ==========================================================================
+     MOBILE RESPONSIVENESS: DRAWERS, MODALS & NAVIGABLE VIEWS
+     ========================================================================== */
+
+  /* 1. Mobile Enquiry Drawer (Zero horizontal clipping, 100% viewport width) */
+  .enquiry-drawer {
+    width: 100% !important;
+    max-width: 100vw !important;
+    left: 0 !important;
+    right: 0 !important;
+    box-shadow: none !important;
+    overflow-x: hidden !important;
+  }
+  .enquiry-drawer-header {
+    padding: 0.95rem 1rem !important;
+    gap: 0.5rem !important;
+  }
+  .enquiry-drawer-title {
+    font-size: clamp(1.05rem, 4.4vw, 1.25rem) !important;
+  }
+  .enquiry-drawer-subtitle {
+    font-size: clamp(0.7rem, 2.9vw, 0.78rem) !important;
+  }
+  .enquiry-drawer-body {
+    padding: 1rem 0.9rem !important;
+    overflow-x: hidden !important;
+  }
+  .enquiry-wa-banner {
+    padding: 0.9rem !important;
+    margin-bottom: 1.15rem !important;
+  }
+  .btn-wa-banner {
+    padding: 0.65rem 0.85rem !important;
+    font-size: 0.85rem !important;
+  }
+  .form-row-2col {
+    grid-template-columns: 1fr !important;
+    gap: 0.85rem !important;
+  }
+  .form-styled-input, .form-styled-select, .form-styled-textarea {
+    font-size: 16px !important;
+    padding: 0.65rem 0.75rem !important;
+  }
+
+  /* 2. Mobile Cart Drawer (Full width, no clipping or overflow) */
+  .cart-drawer {
+    width: 100% !important;
+    max-width: 100vw !important;
+    left: 0 !important;
+    right: 0 !important;
+    box-shadow: none !important;
+    overflow-x: hidden !important;
+  }
+  .cart-header {
+    padding: 0.95rem 1rem !important;
+  }
+  .cart-title {
+    font-size: clamp(1.05rem, 4.4vw, 1.25rem) !important;
+  }
+  .cart-items-scroll {
+    padding: 1rem 0.9rem !important;
+    overflow-x: hidden !important;
+  }
+  .cart-item-row {
+    gap: 0.75rem !important;
+  }
+  .cart-item-thumbnail {
+    width: 62px !important;
+    height: 62px !important;
+    flex-shrink: 0 !important;
+  }
+  .cart-item-title {
+    font-size: 0.85rem !important;
+    overflow-wrap: anywhere !important;
+  }
+  .cart-footer {
+    padding: 1rem 0.9rem !important;
+  }
+  .cart-actions-stack .btn {
+    width: 100% !important;
+    white-space: normal !important;
+    text-align: center !important;
+    justify-content: center !important;
+    font-size: 0.88rem !important;
+    padding: 0.8rem 0.75rem !important;
+  }
+
+  /* 3. Modals (QuickView, Account, Wishlist) */
+  .modal-overlay {
+    padding: 0.75rem !important;
+  }
+  .modal-card {
+    width: calc(100vw - 1.5rem) !important;
+    max-width: 100vw !important;
+    padding: 1.25rem 1rem !important;
+    margin: auto !important;
+    border-radius: var(--radius-md) !important;
+  }
+  .quickview-layout {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .quickview-img-wrap img {
+    max-height: 240px !important;
+    width: 100% !important;
+    object-fit: cover !important;
+  }
+  .quickview-title {
+    font-size: 1.2rem !important;
+  }
+  .quickview-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.65rem !important;
+  }
+  .quickview-actions .btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* 4. Navigable Views: Catalog / Shop Page */
+  .catalog-filter-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+  }
+  .category-pills-scroll {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-bottom: 0.4rem !important;
+  }
+  .catalog-sort-box {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  /* 5. Navigable Views: Page Hero Banners (Shop, Corporate, About, Contact) */
+  .page-hero-banner {
+    padding: 2.25rem 1rem 1.75rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .page-hero-title {
+    font-size: clamp(1.65rem, 6.5vw, 2.25rem) !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+  .page-hero-subtitle {
+    font-size: clamp(0.85rem, 3.6vw, 0.98rem) !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+
+  /* 6. Navigable Views: Corporate Gifting */
+  .gd-corporate-banner-section {
+    padding: 2rem 0 !important;
+  }
+  .gd-corporate-banner {
+    grid-template-columns: 1fr !important;
+    border-radius: var(--radius-md) !important;
+  }
+  .corp-banner-visual {
+    display: none !important;
+  }
+  .corp-banner-content {
+    padding: 1.75rem 1.1rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .corp-banner-title {
+    font-size: clamp(1.5rem, 6vw, 2rem) !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+  .corp-banner-desc {
+    font-size: 0.92rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+  .corp-tags-list {
+    width: 100% !important;
+    gap: 0.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  .corp-tag-btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: 0.82rem !important;
+    padding: 0.5rem 0.85rem !important;
+    box-sizing: border-box !important;
+    word-break: break-word !important;
+  }
+  .corp-action-row {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 0.65rem !important;
+  }
+  .corp-action-row .btn,
+  .corp-action-row .btn-navy-enquire,
+  .corp-action-row .btn-wa-direct {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 0.8rem 1rem !important;
+  }
+
+  /* 7. Navigable Views: Product Detail Page (PDP) */
+  .product-detail-page {
+    padding-top: 1rem !important;
+  }
+  .product-breadcrumb {
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    padding-bottom: 0.35rem !important;
+    font-size: 0.8rem !important;
+    -webkit-overflow-scrolling: touch !important;
+    margin-bottom: 1rem !important;
+  }
+  .pdp-product-title {
+    font-size: clamp(1.4rem, 5.5vw, 1.85rem) !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+  .pdp-status-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.4rem !important;
+  }
+  .pdp-pricing-box,
+  .pdp-order-box {
+    padding: 1rem 0.9rem !important;
+    border-radius: var(--radius-sm) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .order-field-group {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .pdp-input,
+  .pdp-textarea {
+    font-size: 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .order-qty-row {
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+  }
+  .pdp-action-buttons {
+    width: 100% !important;
+    gap: 0.65rem !important;
+  }
+  .pdp-action-buttons .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.8rem 1rem !important;
+  }
+  .pdp-tab-nav {
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* 8. Navigable Views: Contact & Atelier Section */
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  .contact-info-card,
+  .contact-form {
+    padding: 1.25rem 1rem !important;
+    border-radius: var(--radius-md) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .form-row {
+    grid-template-columns: 1fr !important;
+    gap: 0.85rem !important;
+  }
+  .form-control {
+    font-size: 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 9. Navigable Views: About Atelier & Story */
+  .gd-story-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  .gd-story-visual-wrap {
+    min-height: 260px !important;
+  }
+  .story-img-main img {
+    height: 240px !important;
+  }
+  .story-img-floating {
+    width: 140px !important;
+    height: 140px !important;
+    bottom: -15px !important;
+    right: 5px !important;
+  }
+  .gd-story-content {
+    padding: 0 !important;
+    width: 100% !important;
+  }
+  .gd-story-title {
+    font-size: clamp(1.45rem, 5.8vw, 1.95rem) !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+  .gd-story-actions {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 0.65rem !important;
+  }
+  .gd-story-actions .btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .story-features-row {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+    align-items: flex-start !important;
+  }
 }
 
 @media (max-width: 360px) {
