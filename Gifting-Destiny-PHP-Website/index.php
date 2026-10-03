@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-// PHP hosting entry point for the Gifting Destiny static frontend.
-// Keep index.html, assets/, and the MP4 files beside this file.
-$htmlFile = __DIR__ . '/index.html';
+// PHP entry point for the compiled Gifting Destiny frontend.
+// Keep index.html, assets/, and the public media files beside this file.
+$htmlFile = __DIR__ . DIRECTORY_SEPARATOR . 'index.html';
 
 if (!is_file($htmlFile)) {
     http_response_code(500);

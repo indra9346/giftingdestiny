@@ -5460,17 +5460,21 @@ textarea.form-control {
 }
 
 /* ==========================================================================
-   HOMEPAGE BACKGROUND VIDEO BANNER (bgv.mp4 Autoplay Loop)
+   HOMEPAGE BACKGROUND VIDEO BANNER (gifting-destiny-brand-film.mp4)
    ========================================================================== */
 
 .hero-video-banner {
   position: relative;
-  min-height: 82vh;
+  min-height: min(85vh, 720px);
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: linear-gradient(135deg, #f7efe5, #ead8cc 55%, #d9dce8);
+  background: #0f172a;
   border-bottom: 0;
+}
+
+[data-theme="light"] .hero-video-banner {
+  background: linear-gradient(135deg, #f7efe5, #ead8cc 55%, #d9dce8);
 }
 
 .hero-video-container {
@@ -5479,17 +5483,22 @@ textarea.form-control {
   width: 100%;
   height: 100%;
   z-index: 1;
+  overflow: hidden;
 }
 
 .hero-video-element {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   display: block;
-  background: linear-gradient(135deg, #f7efe5, #ead8cc 55%, #d9dce8);
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 88%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 88%, transparent 100%);
+  background: #0f172a;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+[data-theme="light"] .hero-video-element {
+  background: #f7efe5;
 }
 
 .hero-video-scrim {
@@ -5497,73 +5506,108 @@ textarea.form-control {
   inset: 0;
   background: linear-gradient(
     90deg, 
-    rgba(255, 240, 245, 0.58) 0%, 
-    rgba(255, 230, 238, 0.42) 48%, 
-    rgba(255, 225, 235, 0.12) 85%, 
-    rgba(255, 225, 235, 0.05) 100%
+    rgba(15, 23, 42, 0.92) 0%, 
+    rgba(15, 23, 42, 0.78) 46%, 
+    rgba(15, 23, 42, 0.35) 80%, 
+    rgba(15, 23, 42, 0.12) 100%
   );
   backdrop-filter: blur(0.5px);
+}
+
+[data-theme="light"] .hero-video-scrim {
+  background: linear-gradient(
+    90deg, 
+    rgba(255, 248, 242, 0.94) 0%, 
+    rgba(255, 246, 239, 0.80) 46%, 
+    rgba(255, 243, 235, 0.38) 80%, 
+    rgba(255, 240, 232, 0.15) 100%
+  );
 }
 
 .hero-video-content-wrap {
   position: relative;
   z-index: 3;
-  padding: 4.5rem 1.5rem;
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 4.5rem clamp(1.25rem, 4vw, 3.5rem);
 }
 
 .hero-video-text-box {
-  max-width: 640px;
+  max-width: 660px;
 }
 
 .hero-video-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(128, 0, 32, 0.08);
-  border: 1px solid rgba(128, 0, 32, 0.25);
-  color: #800020;
-  padding: 0.45rem 1.15rem;
+  background: rgba(212, 175, 55, 0.16);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: #f1c40f;
+  padding: 0.42rem 1.1rem;
   border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   margin-bottom: 1.25rem;
+  backdrop-filter: blur(8px);
+}
+
+[data-theme="light"] .hero-video-badge {
+  background: rgba(128, 0, 32, 0.08);
+  border-color: rgba(128, 0, 32, 0.22);
+  color: #800020;
 }
 
 .hero-video-title {
   font-family: var(--font-serif);
-  font-size: 4.5rem;
+  font-size: clamp(2.4rem, 4.8vw, 4.4rem);
   font-weight: 700;
-  color: #2b0914 !important;
-  line-height: 1.05;
-  margin-bottom: 0.4rem;
+  color: #ffffff !important;
+  line-height: 1.08;
+  margin-bottom: 0.45rem;
   letter-spacing: -0.02em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="light"] .hero-video-title {
+  color: #1e1018 !important;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .hero-video-subtitle {
   font-family: var(--font-serif);
-  font-size: 2.2rem;
+  font-size: clamp(1.2rem, 2.2vw, 2rem);
   font-weight: 600;
-  color: #800020 !important;
+  color: #f5d77f !important;
   font-style: italic;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.15rem;
+  line-height: 1.25;
+}
+
+[data-theme="light"] .hero-video-subtitle {
+  color: #800020 !important;
 }
 
 .hero-video-desc {
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 1.3vw, 1.12rem);
+  color: #e2e8f0 !important;
+  line-height: 1.65;
+  margin-bottom: 2rem;
+  font-weight: 450;
+  max-width: 600px;
+}
+
+[data-theme="light"] .hero-video-desc {
   color: #334155 !important;
-  line-height: 1.7;
-  margin-bottom: 2.25rem;
-  font-weight: 500;
 }
 
 .hero-video-cta-row {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 1.1rem;
   flex-wrap: wrap;
-  margin-bottom: 2.75rem;
+  margin-bottom: 2.25rem;
 }
 
 .btn-hero-gold {
@@ -6723,46 +6767,7 @@ textarea.form-control {
   padding: 0.65rem 2rem 0.65rem 0;
 }
 
-/* The brand film already contains its complete wordmark and product artwork.
-   Keep the full frame intact and place the actions below it instead of over it. */
-.hero-video-banner {
-  display: block;
-  min-height: 0;
-  background: linear-gradient(135deg, #f7efe5, #ead8cc 55%, #d9dce8);
-}
-.hero-video-container {
-  position: relative;
-  inset: auto;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 3.06 / 1;
-  overflow: hidden;
-  background: linear-gradient(135deg, #f7efe5, #ead8cc 55%, #d9dce8);
-}
-.hero-video-element {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-}
-.hero-video-content-wrap {
-  padding: 1rem 1.25rem;
-}
-.hero-video-text-box { max-width: none; }
-.hero-video-cta-row {
-  justify-content: center;
-  gap: 0.75rem;
-  margin: 0;
-}
-.hero-video-cta-row .btn { min-height: 44px; }
-@media (max-width: 640px) {
-  .hero-video-container { aspect-ratio: 3.06 / 1; }
-  .hero-video-content-wrap { padding: 0.75rem 1rem; }
-  .hero-video-cta-row { display: grid; grid-template-columns: 1fr; width: min(100%, 360px); margin-inline: auto; }
-  .hero-video-cta-row .btn { width: 100%; justify-content: center; }
-}
+/* Search and catalogue styling */
 
 /* Keep catalogue cards and their actions inside narrow phone columns. */
 @media (max-width: 640px) {
@@ -6821,52 +6826,7 @@ textarea.form-control {
   .product-card-title { font-size: 0.88rem; }
 }
 
-/* The uploaded promotional clip is 16:9; show the complete frame at every size. */
-.hero-video-banner {
-  width: 100%;
-  min-height: 0;
-  display: block;
-  overflow: hidden;
-}
 
-.hero-video-container {
-  position: relative;
-  inset: auto;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-}
-
-.hero-video-element {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  -webkit-mask-image: none;
-  mask-image: none;
-}
-
-@media (max-width: 640px) {
-  .hero-video-container { aspect-ratio: 16 / 9; }
-}
-
-/* Keep the complete film visible while fitting the hero into laptop screens. */
-@media (min-width: 641px) {
-  .hero-video-container {
-    height: auto;
-    aspect-ratio: 16 / 9;
-  }
-}
-
-@media (max-width: 640px) {
-  .hero-video-container {
-    height: auto;
-    aspect-ratio: 16 / 9;
-  }
-}
 
 /* Site-wide mobile containment: avoid sideways page drift and let grid/flex
    children shrink instead of pushing the viewport wider than the device. */
@@ -6952,67 +6912,148 @@ main > * { min-width: 0; max-width: 100%; }
   }
 }
 
-@media (max-width: 640px) {
-  .hero-video-container {
-    height: auto;
-    aspect-ratio: 16 / 9;
+/* ==========================================================================
+   HOMEPAGE BACKGROUND VIDEO RESPONSIVE ADAPTATION (LAPTOP & MOBILE UI)
+   ========================================================================== */
+
+/* Laptop / Desktop UI (min-width: 769px) */
+@media (min-width: 769px) {
+  .hero-video-banner {
+    min-height: min(86vh, 740px);
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
   }
-  .hero-video-element { object-fit: cover; }
-}
-
-/* Keep the brand film and its matching calls to action together in the
-   viewport below the sticky header, while preserving the complete video
-   frame and all of its product-specific captions at every screen size. */
-.hero-video-banner {
-  height: var(--hero-viewport-height, calc(100svh - 160px));
-  min-height: 320px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.hero-video-container {
-  position: relative;
-  inset: auto;
-  flex: 1 1 auto;
-  width: 100%;
-  height: auto;
-  min-height: 0;
-  aspect-ratio: auto;
-  overflow: hidden;
-  display: grid;
-  place-items: center;
-}
-
-.hero-video-element {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  background: #f7efe5;
-}
-
-.hero-video-content-wrap {
-  flex: 0 0 auto;
-  padding: 0.65rem clamp(12px, 3vw, 32px);
-}
-
-.hero-video-cta-row { margin: 0; }
-
-@media (max-width: 640px) {
-  .hero-video-banner { min-height: 320px; }
-  .hero-video-content-wrap { padding: 0.55rem 12px; }
   .hero-video-container {
-    flex: 0 0 min(55svh, 100vw);
-    max-height: min(55svh, 100vw);
-    margin-block: auto;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
   }
-  .hero-video-element { object-fit: cover; }
+  .hero-video-element {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+  .hero-video-content-wrap {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 4.5rem clamp(1.5rem, 5vw, 4rem);
+  }
+  .hero-video-text-box {
+    max-width: 680px;
+  }
+}
+
+/* Mobile UI (max-width: 768px) */
+@media (max-width: 768px) {
+  .hero-video-banner {
+    position: relative;
+    min-height: max(540px, 78svh);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    padding: 0;
+  }
+  .hero-video-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .hero-video-element {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .hero-video-scrim {
+    background: linear-gradient(
+      180deg, 
+      rgba(15, 23, 42, 0.40) 0%, 
+      rgba(15, 23, 42, 0.76) 45%, 
+      rgba(15, 23, 42, 0.95) 100%
+    );
+  }
+  [data-theme="light"] .hero-video-scrim {
+    background: linear-gradient(
+      180deg, 
+      rgba(255, 248, 242, 0.40) 0%, 
+      rgba(255, 246, 239, 0.82) 45%, 
+      rgba(255, 244, 236, 0.96) 100%
+    );
+  }
+  .hero-video-content-wrap {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    padding: 1.5rem 1rem 1.75rem 1rem;
+  }
+  .hero-video-text-box {
+    width: 100%;
+    max-width: 100%;
+  }
+  .hero-video-badge {
+    font-size: 0.72rem;
+    padding: 0.35rem 0.85rem;
+    margin-bottom: 0.65rem;
+  }
+  .hero-video-title {
+    font-size: 2.15rem;
+    line-height: 1.12;
+    margin-bottom: 0.35rem;
+  }
+  .hero-video-subtitle {
+    font-size: 1.15rem;
+    line-height: 1.3;
+    margin-bottom: 0.65rem;
+  }
+  .hero-video-desc {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+  }
   .hero-video-cta-row {
-    width: min(100%, 360px);
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.55rem;
+    width: 100%;
+    margin-bottom: 1.25rem;
   }
-  .hero-video-cta-row .btn { min-height: 42px; padding-block: 0.55rem; }
+  .hero-video-cta-row .btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.7rem 1rem;
+    font-size: 0.92rem;
+  }
+  .hero-video-perks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+  .perk-tag {
+    font-size: 0.72rem;
+    padding: 0.32rem 0.45rem;
+    justify-content: center;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero-video-title { font-size: 1.85rem; }
+  .hero-video-subtitle { font-size: 1.05rem; }
+  .hero-video-perks { grid-template-columns: 1fr; }
 }

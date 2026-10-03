@@ -268,14 +268,13 @@ function renderApp() {
     window.addEventListener('resize', heroViewportResizeHandler, { passive: true });
     window.visualViewport?.addEventListener('resize', heroViewportResizeHandler, { passive: true });
 
-    // A modest speed increase keeps the product transitions lively while
-    // preserving the source film's natural motion.
-    newVideo.defaultPlaybackRate = 1.15;
-    newVideo.playbackRate = 1.15;
+    // Play the cinematic background video at smooth 1.0x native motion
+    newVideo.defaultPlaybackRate = 1.0;
+    newVideo.playbackRate = 1.0;
     if (videoPosition !== null && Number.isFinite(videoPosition)) {
       newVideo.addEventListener('loadedmetadata', () => {
         try { newVideo.currentTime = videoPosition; } catch {}
-        newVideo.playbackRate = 1.15;
+        newVideo.playbackRate = 1.0;
       }, { once: true });
     }
     const videoSource = newVideo.querySelector('source');
@@ -283,7 +282,7 @@ function renderApp() {
     newVideo.addEventListener('error', () => {
       if (triedBackupVideo || !videoSource) return;
       triedBackupVideo = true;
-      videoSource.src = '/bgv.mp4';
+      videoSource.src = '/gifting-destiny-brand-film.mp4';
       newVideo.load();
       newVideo.play().catch(() => {});
     });
