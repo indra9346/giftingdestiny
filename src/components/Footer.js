@@ -11,8 +11,8 @@ export function renderFooter() {
           <div class="footer-col footer-brand-col">
             <div class="footer-brand-header">
               <img 
-                src="/assets/logo.svg" 
-                alt="Gifting Destiny Logo" 
+                src="/assets/gifting-destiny-original-logo.jpg" 
+                alt="Gifting Destiny logo" 
                 class="footer-logo-img-large" 
                 width="140"
                 height="140"

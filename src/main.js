@@ -103,12 +103,12 @@ function bindSiteImageHandling() {
     if (!(image instanceof HTMLImageElement) || image.dataset.siteImageFailed === 'true') return;
 
     // Special handling for brand logo: ALWAYS restore local SVG logo
-    if (image.classList.contains('brand-logo-img') || image.classList.contains('footer-logo-img-large') || image.alt?.includes('Logo')) {
-      if (image.src.endsWith('/assets/logo.svg') || image.src.endsWith('/favicon.svg')) {
+    if (image.classList.contains('brand-logo-img') || image.classList.contains('footer-logo-img-large') || image.alt?.toLowerCase().includes('logo')) {
+      if (image.src.endsWith('/assets/gifting-destiny-original-logo.jpg') || image.src.endsWith('/favicon.svg')) {
         image.dataset.siteImageFailed = 'true';
         return;
       }
-      image.src = '/assets/logo.svg';
+      image.src = '/assets/gifting-destiny-original-logo.jpg';
       return;
     }
 
