@@ -7,63 +7,63 @@ export function renderCollectionSlider() {
       id: 'pens',
       title: 'Pens',
       subtitle: 'Corporate',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/3-2.webp',
+      image: '/images/categories/pens.jpg',
       badge: 'Bestseller'
     },
     {
       id: 'bottles',
       title: 'Bottles',
       subtitle: 'Steel',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/2-2-1.webp',
+      image: '/images/categories/bottles.jpg',
       badge: 'Trending'
     },
     {
       id: 'combo',
       title: 'Combo',
       subtitle: 'Bundles',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/Combo-sets.webp',
+      image: '/images/categories/combo.jpg',
       badge: 'VIP Sets'
     },
     {
       id: 'pillows',
       title: 'Pillows',
       subtitle: 'Print',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/Premium-Customizable-Heart-Shaped-Fur-Cushion-%E2%80%93-Red-Plush-Pillow-with-White-Personalization-Panel-1.webp',
+      image: '/images/categories/pillows.jpg',
       badge: 'Photo Gifts'
     },
     {
       id: 'keychains',
       title: 'Keychains',
       subtitle: 'Custom',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/1-2.webp',
+      image: '/images/categories/keychains.jpg',
       badge: 'Popular'
     },
     {
       id: 'diaries',
       title: 'Diaries',
       subtitle: 'Executive',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/2-2-1.webp',
+      image: '/images/categories/diaries.jpg',
       badge: 'Notebooks'
     },
     {
       id: 'sublimation-mugs',
       title: 'Sublimation Mugs',
       subtitle: 'Ceramic',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/Premium-Heart-Handle-Sublimation-Mug-White-Exterior-with-Navy-Blue-Colored-Interior-Handle-600x648.webp',
+      image: '/images/categories/sublimation-mugs.jpg',
       badge: 'Dual Tone'
     },
     {
       id: 'machines',
       title: 'Machines',
       subtitle: 'Press',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/Machine-1.webp',
+      image: '/images/categories/machines.jpg',
       badge: 'Heavy Duty'
     },
     {
       id: 'frames',
       title: 'Frames',
       subtitle: 'LED Light',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/image-3.webp',
+      image: '/images/categories/frames.jpg',
       badge: 'Acrylic 3D'
     }
   ];

@@ -102,17 +102,47 @@ function bindSiteImageHandling() {
     const image = event.target;
     if (!(image instanceof HTMLImageElement) || image.dataset.siteImageFailed === 'true') return;
 
+    // Special handling for brand logo: ALWAYS restore local SVG logo
+    if (image.classList.contains('brand-logo-img') || image.classList.contains('footer-logo-img-large') || image.alt?.includes('Logo')) {
+      if (image.src.endsWith('/assets/logo.svg') || image.src.endsWith('/favicon.svg')) {
+        image.dataset.siteImageFailed = 'true';
+        return;
+      }
+      image.src = '/assets/logo.svg';
+      return;
+    }
+
     const productId = image.closest('[data-product-id]')?.dataset.productId
       || (image.id === 'pdp-main-image' || image.closest('.pdp-thumbnails-strip') ? store.state.selectedProductId : null);
     const product = csvProducts.find(item => item.id === productId);
+
+    // Get fallback category image
+    const catName = (product?.primaryCategory || product?.categories?.[0] || '').toLowerCase();
+    let catFallback = '/images/categories/combo.jpg';
+    if (catName.includes('pen')) catFallback = '/images/categories/pens.jpg';
+    else if (catName.includes('bottle')) catFallback = '/images/categories/bottles.jpg';
+    else if (catName.includes('keychain')) catFallback = '/images/categories/keychains.jpg';
+    else if (catName.includes('cushion') || catName.includes('pillow')) catFallback = '/images/categories/pillows.jpg';
+    else if (catName.includes('fabric')) catFallback = '/images/categories/fabric-diary.jpg';
+    else if (catName.includes('dier') || catName.includes('diar')) catFallback = '/images/categories/diaries.jpg';
+    else if (catName.includes('mug')) catFallback = '/images/categories/sublimation-mugs.jpg';
+    else if (catName.includes('machine')) catFallback = '/images/categories/machines.jpg';
+    else if (catName.includes('accessor')) catFallback = '/images/categories/sublimation-accessories.jpg';
+    else if (catName.includes('frame')) catFallback = '/images/categories/frames.jpg';
+    else if (catName.includes('wallet')) catFallback = '/images/categories/wallets.jpg';
+
     const options = [...new Set([
       ...(Array.isArray(product?.images) ? product.images : []),
       product?.secondaryImage,
-      product?.primaryImage
+      product?.primaryImage,
+      catFallback,
+      '/images/categories/combo.jpg'
     ].filter(Boolean))];
+
     const failed = new Set(JSON.parse(image.dataset.failedImageUrls || '[]'));
     failed.add(image.currentSrc || image.src);
     image.dataset.failedImageUrls = JSON.stringify([...failed]);
+
     const next = options.find(url => {
       try { return !failed.has(new URL(url, window.location.href).href); } catch { return false; }
     });
@@ -132,9 +162,17 @@ function bindSiteImageHandling() {
     const fallback = document.createElement('div');
     fallback.className = 'product-image-fallback site-image-fallback';
     fallback.setAttribute('role', 'img');
-    fallback.setAttribute('aria-label', `Photo unavailable for ${product?.name || image.alt || 'this item'}`);
-    fallback.innerHTML = '<span class="site-image-fallback-icon" aria-hidden="true">▧</span><span class="site-image-fallback-label"></span>';
-    fallback.querySelector('.site-image-fallback-label').textContent = product?.name || image.alt || 'Product photo unavailable';
+    fallback.setAttribute('aria-label', product?.name || image.alt || 'Gifting Destiny Atelier');
+    fallback.innerHTML = `
+      <svg class="site-image-fallback-svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: #a0002b; margin-bottom: 0.25rem;">
+        <polyline points="20 12 20 22 4 22 4 12"></polyline>
+        <rect x="2" y="7" width="20" height="5"></rect>
+        <line x1="12" y1="22" x2="12" y2="7"></line>
+        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+        <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+      </svg>
+      <span class="site-image-fallback-label">${product?.name || image.alt || 'Gifting Destiny Collection'}</span>
+    `;
     image.replaceWith(fallback);
   }, true);
 }

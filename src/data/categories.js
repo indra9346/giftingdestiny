@@ -10,7 +10,7 @@ export const liveWooCommerceCategories = [
     name: 'Pen',
     match: ['Pen'],
     description: 'Executive metallic, matte, and glossy ballpoint pens with laser engraving.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/3-2.webp',
+    image: '/images/categories/pens.jpg',
     icon: 'pen-tool'
   },
   {
@@ -18,7 +18,7 @@ export const liveWooCommerceCategories = [
     name: 'Bottle',
     match: ['Bottle'],
     description: 'Insulated stainless steel water bottles and flasks with temperature display.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/2-2-1.webp',
+    image: '/images/categories/bottles.jpg',
     icon: 'droplets'
   },
   {
@@ -26,7 +26,7 @@ export const liveWooCommerceCategories = [
     name: 'Keychains',
     match: ['Keychains'],
     description: 'Premium metal, leatherette, and custom engraved keychains.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/1-2.webp',
+    image: '/images/categories/keychains.jpg',
     icon: 'key'
   },
   {
@@ -34,7 +34,7 @@ export const liveWooCommerceCategories = [
     name: 'Combo sets',
     match: ['Combo sets'],
     description: 'Curated corporate gifting hampers, luxury executive bundles, and VIP gift sets.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/Combo-sets.webp',
+    image: '/images/categories/combo.jpg',
     icon: 'gift'
   },
   {
@@ -42,7 +42,7 @@ export const liveWooCommerceCategories = [
     name: 'Pillow',
     match: ['Pillow'],
     description: 'Customizable plush fur cushions and heart-shaped photo pillows.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/Premium-Customizable-Heart-Shaped-Fur-Cushion-%E2%80%93-Red-Plush-Pillow-with-White-Personalization-Panel-1.webp',
+    image: '/images/categories/pillows.jpg',
     icon: 'heart'
   },
   {
@@ -50,7 +50,7 @@ export const liveWooCommerceCategories = [
     name: 'Diery',
     match: ['Diery'],
     description: 'Executive PU leather diaries, organizers, and notebooks with magnetic clasp.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/2-2-1.webp',
+    image: '/images/categories/diaries.jpg',
     icon: 'book'
   },
   {
@@ -58,7 +58,7 @@ export const liveWooCommerceCategories = [
     name: 'Sublimation Mugs',
     match: ['Sublimation Mugs'],
     description: 'Ceramic dual-tone, heart-handle, and patch sublimation coffee mugs.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/Premium-Heart-Handle-Sublimation-Mug-White-Exterior-with-Navy-Blue-Colored-Interior-Handle-600x648.webp',
+    image: '/images/categories/sublimation-mugs.jpg',
     icon: 'coffee'
   },
   {
@@ -66,7 +66,7 @@ export const liveWooCommerceCategories = [
     name: 'Machine',
     match: ['Machine'],
     description: 'Industrial sublimation heat presses and machinery for mugs, caps, and t-shirts.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/Machine-1.webp',
+    image: '/images/categories/machines.jpg',
     icon: 'cpu'
   },
   {
@@ -74,7 +74,7 @@ export const liveWooCommerceCategories = [
     name: 'Sublimation Accessories',
     match: ['Sublimation Accessories'],
     description: 'High-density sublimation inks, thermal tapes, and blank mouse pads.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/case-studies-img-4.webp',
+    image: '/images/categories/sublimation-accessories.jpg',
     icon: 'layers'
   },
   {
@@ -82,7 +82,7 @@ export const liveWooCommerceCategories = [
     name: 'LED Light Frames',
     match: ['LED Light Frames'],
     description: 'Personalized wooden finish backlit LED photo frames.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/image-3.webp',
+    image: '/images/categories/frames.jpg',
     icon: 'sun'
   },
   {
@@ -90,7 +90,7 @@ export const liveWooCommerceCategories = [
     name: 'Wallet Combo set',
     match: ['Wallet Combo set'],
     description: 'Men’s bi-fold genuine leather wallets and 3-in-1 / 4-in-1 combo gift boxes.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/Gift-01.webp',
+    image: '/images/categories/wallets.jpg',
     icon: 'briefcase'
   },
   {
@@ -98,7 +98,7 @@ export const liveWooCommerceCategories = [
     name: 'Fabric Diary',
     match: ['Fabric Diary'],
     description: 'Textured fabric finish executive journals and corporate diary sets.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/2-2-1.webp',
+    image: '/images/categories/fabric-diary.jpg',
     icon: 'book-open'
   },
   {
@@ -106,7 +106,7 @@ export const liveWooCommerceCategories = [
     name: 'Card Holder',
     match: ['Card Holder'],
     description: 'Sleek metal and leather business visiting card cases.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/Combo-sets.webp',
+    image: '/images/categories/combo.jpg',
     icon: 'credit-card'
   },
   {
@@ -114,7 +114,7 @@ export const liveWooCommerceCategories = [
     name: 'Pen & Keychain',
     match: ['Pen & Keychain'],
     description: '2-in-1 matched luxury executive pen and keychain gift sets in presentation boxes.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/3-2.webp',
+    image: '/images/categories/pens.jpg',
     icon: 'award'
   },
   {
@@ -122,7 +122,7 @@ export const liveWooCommerceCategories = [
     name: 'Wall Decor',
     match: ['Wall Decor'],
     description: 'Glowing personalized wall art and decorative illuminated plaques.',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/image-3.webp',
+    image: '/images/categories/frames.jpg',
     icon: 'image'
   },
   {
@@ -130,7 +130,7 @@ export const liveWooCommerceCategories = [
     name: 'Mugs',
     match: ['Mugs'],
     description: 'Mug collection (all 7 current custom mugs are catalogued under Sublimation Mugs).',
-    image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/Premium-Heart-Handle-Sublimation-Mug-White-Exterior-with-Navy-Blue-Colored-Interior-Handle-600x648.webp',
+    image: '/images/categories/sublimation-mugs.jpg',
     icon: 'coffee'
   }
 ].map(cat => {

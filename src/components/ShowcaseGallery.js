@@ -3,37 +3,37 @@ export function renderShowcaseGallery() {
     {
       title: 'Precision Metallic & Executive Pens',
       subtitle: 'Laser Engraved Branding',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/6-4.webp',
+      image: '/images/categories/pens.jpg',
       cat: 'pens'
     },
     {
       title: 'Ceramic Sublimation Mugs',
       subtitle: 'Glossy Finish & Custom Prints',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/Premium-Heart-Handle-Sublimation-Mug-White-Exterior-with-Navy-Blue-Colored-Interior-Handle-600x648.webp',
+      image: '/images/categories/sublimation-mugs.jpg',
       cat: 'sublimation-mugs'
     },
     {
       title: 'Authentic Gifting Destiny Inks',
       subtitle: 'Vibrant Sublimation Inks & Accessories',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/case-studies-img-4.webp',
+      image: '/images/categories/sublimation-accessories.jpg',
       cat: 'accessories'
     },
     {
       title: 'Luxury Leatherette Wallets & Sets',
       subtitle: 'Corporate Presentation Boxes',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/2-2-1.webp',
+      image: '/images/categories/wallets.jpg',
       cat: 'diaries'
     },
     {
       title: 'Industrial Sublimation Heat Presses',
       subtitle: 'Production Grade Printing Equipment',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/Machine-1.webp',
+      image: '/images/categories/machines.jpg',
       cat: 'machines'
     },
     {
       title: 'Bespoke Keychains & Rings',
       subtitle: 'Laser Etched Metal & Leather',
-      image: 'https://giftingdestiny.com/wp-content/uploads/2026/01/1-2.webp',
+      image: '/images/categories/keychains.jpg',
       cat: 'keychains'
     }
   ];

@@ -13,7 +13,7 @@ export function renderHeader(state) {
         <div class="container header-container">
           <!-- Brand Logo -->
           <a href="#" class="brand-logo" data-view="home" aria-label="Gifting Destiny Home">
-            <img src="https://giftingdestiny.com/wp-content/uploads/2026/01/cropped-546388500_759687593642332_2147221703036924897_n.png" alt="Gifting Destiny Logo" class="brand-logo-img" />
+            <img src="/assets/logo.svg" alt="Gifting Destiny Logo" class="brand-logo-img" width="48" height="48" />
             <div class="brand-text">
               <span class="brand-title">Gifting Destiny</span>
               <span class="brand-tagline">Crafted with Love &amp; Care</span>
@@ -136,7 +136,7 @@ export function renderHeader(state) {
         <div class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true" aria-label="Mobile navigation">
           <div class="mobile-drawer-header">
             <div class="mobile-brand">
-              <img src="https://giftingdestiny.com/wp-content/uploads/2026/01/cropped-546388500_759687593642332_2147221703036924897_n.png" alt="Gifting Destiny Logo" />
+              <img src="/assets/logo.svg" alt="Gifting Destiny Logo" width="40" height="40" />
               <span>Gifting Destiny</span>
             </div>
             <button class="mobile-drawer-close" id="mobile-drawer-close-btn" type="button" aria-label="Close navigation menu">&times;</button>

@@ -11,9 +11,11 @@ export function renderFooter() {
           <div class="footer-col footer-brand-col">
             <div class="footer-brand-header">
               <img 
-                src="https://giftingdestiny.com/wp-content/uploads/2026/01/cropped-546388500_759687593642332_2147221703036924897_n.png" 
+                src="/assets/logo.svg" 
                 alt="Gifting Destiny Logo" 
                 class="footer-logo-img-large" 
+                width="140"
+                height="140"
               />
             </div>
             
