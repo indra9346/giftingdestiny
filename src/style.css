@@ -3843,18 +3843,6 @@ textarea.form-control {
   height: 2.8em;
 }
 
-.product-card-description {
-  color: #64748b;
-  font-size: 0.8rem;
-  line-height: 1.45;
-  margin: 0 0 0.75rem;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-  min-height: 3.48em;
-}
-
 .product-card-status {
   display: flex;
   align-items: center;

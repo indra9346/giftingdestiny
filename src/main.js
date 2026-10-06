@@ -115,28 +115,13 @@ function bindSiteImageHandling() {
     const productId = image.closest('[data-product-id]')?.dataset.productId
       || (image.id === 'pdp-main-image' || image.closest('.pdp-thumbnails-strip') ? store.state.selectedProductId : null);
     const product = csvProducts.find(item => item.id === productId);
-
-    // Get fallback category image
-    const catName = (product?.primaryCategory || product?.categories?.[0] || '').toLowerCase();
-    let catFallback = '/images/categories/combo.jpg';
-    if (catName.includes('pen')) catFallback = '/images/categories/pens.jpg';
-    else if (catName.includes('bottle')) catFallback = '/images/categories/bottles.jpg';
-    else if (catName.includes('keychain')) catFallback = '/images/categories/keychains.jpg';
-    else if (catName.includes('cushion') || catName.includes('pillow')) catFallback = '/images/categories/pillows.jpg';
-    else if (catName.includes('fabric')) catFallback = '/images/categories/fabric-diary.jpg';
-    else if (catName.includes('dier') || catName.includes('diar')) catFallback = '/images/categories/diaries.jpg';
-    else if (catName.includes('mug')) catFallback = '/images/categories/sublimation-mugs.jpg';
-    else if (catName.includes('machine')) catFallback = '/images/categories/machines.jpg';
-    else if (catName.includes('accessor')) catFallback = '/images/categories/sublimation-accessories.jpg';
-    else if (catName.includes('frame')) catFallback = '/images/categories/frames.jpg';
-    else if (catName.includes('wallet')) catFallback = '/images/categories/wallets.jpg';
-
+    // Do not replace a failed product photo with a category image: that makes
+    // unrelated products look identical. Try only this product's own gallery.
+    if (!product) return;
     const options = [...new Set([
-      ...(Array.isArray(product?.images) ? product.images : []),
-      product?.secondaryImage,
-      product?.primaryImage,
-      catFallback,
-      '/images/categories/combo.jpg'
+      ...(Array.isArray(product.images) ? product.images : []),
+      product.secondaryImage,
+      product.primaryImage
     ].filter(Boolean))];
 
     const failed = new Set(JSON.parse(image.dataset.failedImageUrls || '[]'));

@@ -116,7 +116,6 @@ export function renderProductCatalog(state, isFullPage = false) {
               const isWishlisted = store.isWishlisted(p.id);
               const primaryCat = p.categories[0] || 'Gifts';
               const stockLabel = p.inStock ? 'In Stock' : 'Out of Stock';
-              const productSummary = (p.shortDesc || p.description || '').replace(/<[^>]*>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/\s+/g, ' ').trim();
 
               return `
                 <div class="product-card" data-product-id="${p.id}">
@@ -152,8 +151,6 @@ export function renderProductCatalog(state, isFullPage = false) {
                       ${p.name}
                     </h3>
                     
-                    <p class="product-card-description">${productSummary || 'Product details are available on request.'}</p>
-
                     <div class="product-card-status">
                       <span class="stock-indicator ${p.inStock ? 'in-stock' : 'out-of-stock'}">
                         <span class="stock-dot"></span> ${stockLabel}
