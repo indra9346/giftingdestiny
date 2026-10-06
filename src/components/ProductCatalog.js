@@ -115,6 +115,8 @@ export function renderProductCatalog(state, isFullPage = false) {
             ${displayProducts.map(p => {
               const isWishlisted = store.isWishlisted(p.id);
               const primaryCat = p.categories[0] || 'Gifts';
+              const stockLabel = p.inStock ? 'In Stock' : 'Out of Stock';
+              const productSummary = (p.shortDesc || p.description || '').replace(/<[^>]*>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/\s+/g, ' ').trim();
 
               return `
                 <div class="product-card" data-product-id="${p.id}">
@@ -150,11 +152,13 @@ export function renderProductCatalog(state, isFullPage = false) {
                       ${p.name}
                     </h3>
                     
+                    <p class="product-card-description">${productSummary || 'Product details are available on request.'}</p>
+
                     <div class="product-card-status">
-                      <span class="stock-indicator">
-                        <span class="stock-dot"></span> In Stock
+                      <span class="stock-indicator ${p.inStock ? 'in-stock' : 'out-of-stock'}">
+                        <span class="stock-dot"></span> ${stockLabel}
                       </span>
-                      <span class="custom-ready">Customization Ready</span>
+                      <span class="custom-ready">${p.type === 'variable' ? 'Product variants' : 'Product details'}</span>
                     </div>
 
                     <!-- Card Actions -->
@@ -171,10 +175,11 @@ export function renderProductCatalog(state, isFullPage = false) {
 
                       <button 
                         type="button" 
-                        class="btn-buy-now" 
-                        data-action="buy-now" 
+                        class="btn-buy-now"
+                        data-action="buy-now"
                         data-id="${p.id}"
                         title="Buy ${p.name}"
+                        ${p.inStock ? '' : 'disabled'}
                       >
                         <span>${icon.bag}</span><span>Buy Now</span>
                       </button>

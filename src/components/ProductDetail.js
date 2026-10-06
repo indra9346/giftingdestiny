@@ -165,11 +165,11 @@ export function renderProductDetail(state) {
             <h1 class="pdp-product-title">${product.name}</h1>
 
             <div class="pdp-status-row">
-              <span class="stock-status in-stock">
+              <span class="stock-status ${product.inStock ? 'in-stock' : 'out-of-stock'}">
                 <span class="stock-dot"></span>
-                In Stock & Customization Ready
+                ${product.inStock ? 'In Stock' : 'Out of Stock'}
               </span>
-              <span class="dispatch-time">${icon.pin} Dispatch from Bengaluru atelier in 24-48 hrs</span>
+              <span class="dispatch-time">${product.type === 'variable' ? 'Product variants available' : 'Product ID: GD-' + product.id}</span>
             </div>
 
             <!-- Price & Order Note -->
@@ -271,7 +271,7 @@ export function renderProductDetail(state) {
 
               <div class="pdp-tab-content active" id="tab-desc">
                 <div class="pdp-formatted-description">
-                  ${product.description ? formatProductDescription(product.description) : `<p class="pdp-clean-paragraph">${product.name} is meticulously handcrafted and finished at Gifting Destiny's Bengaluru atelier for meaningful corporate and personal celebrations.</p>`}
+                  ${product.description ? formatProductDescription(product.description) : `<p class="pdp-clean-paragraph">Product details have not been provided in the source catalogue.</p>`}
                 </div>
               </div>
 
@@ -341,10 +341,10 @@ export function renderProductDetail(state) {
                       </h3>
                       
                       <div class="product-card-status">
-                        <span class="stock-indicator">
-                          <span class="stock-dot"></span> In Stock
+                        <span class="stock-indicator ${p.inStock ? 'in-stock' : 'out-of-stock'}">
+                          <span class="stock-dot"></span> ${p.inStock ? 'In Stock' : 'Out of Stock'}
                         </span>
-                        <span class="custom-ready">Customization Ready</span>
+                        <span class="custom-ready">${p.type === 'variable' ? 'Product variants' : 'Product details'}</span>
                       </div>
 
                       <div class="product-card-actions">
