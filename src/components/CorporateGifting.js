@@ -48,13 +48,15 @@ export function renderCorporateGifting() {
             </div>
           </div>
 
-          <!-- Right: Corporate Gift Box with Teal Ribbon (Screenshot 3) -->
+          <!-- Right: Real local executive gift set photo -->
           <div class="corp-banner-visual">
             <img 
-              src="https://giftingdestiny.com/wp-content/uploads/2026/01/Gift-01.webp" 
-              alt="Corporate Gift Box with Ribbon" 
+              src="/images/categories/combo-sets.webp"
+              alt="Executive gift set with a pen, diary and keychain"
               class="corp-box-img"
-              loading="lazy"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
             />
           </div>
         </div>

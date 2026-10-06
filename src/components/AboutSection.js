@@ -5,20 +5,24 @@ export function renderAboutSection(isFullPage = false) {
     <section class="section gd-story-section" id="about-section">
       <div class="container">
         <div class="gd-story-grid">
-          <!-- Left: Stacked Gift Images (Screenshot 2) -->
+          <!-- Left: Stacked photos from the local product catalogue -->
           <div class="gd-story-visual-wrap">
             <div class="story-img-main">
               <img 
-                src="https://giftingdestiny.com/wp-content/uploads/2026/01/Gift-01.webp" 
-                alt="Personalized Gifting Destiny Packages" 
-                loading="lazy" 
+                src="/images/categories/combo-sets.webp"
+                alt="Executive gift set with a pen, diary and keychain"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
               />
             </div>
             <div class="story-img-floating">
               <img 
-                src="https://giftingdestiny.com/wp-content/uploads/2026/01/Combo-sets.webp" 
-                alt="Curated Hamper Box" 
-                loading="lazy" 
+                src="/images/categories/pillow.webp"
+                alt="Red heart-shaped decorative gift cushion"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
               />
             </div>
           </div>
