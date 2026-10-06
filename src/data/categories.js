@@ -1,225 +1,148 @@
 import { csvProducts } from './csvProducts.js';
 
 /**
- * 16 Live WooCommerce Categories exported from WordPress database
- * Verified with wc-product-export-1-10-2026-1790836882239.csv and live site
+ * The 9 Official WooCommerce Categories from http://giftingdestiny.webhostingbaba.com
+ * Accurately matching live categories and original product photography.
  */
 export const liveWooCommerceCategories = [
   {
-    slug: 'pen',
-    name: 'Pen',
-    match: ['Pen'],
-    description: 'Executive metallic, matte, and glossy ballpoint pens with laser engraving.',
-    image: '/images/categories/pens.jpg',
-    icon: 'pen-tool'
-  },
-  {
     slug: 'bottle',
     name: 'Bottle',
-    match: ['Bottle'],
-    description: 'Insulated stainless steel water bottles and flasks with temperature display.',
-    image: '/images/categories/bottles.jpg',
+    match: ['Bottle', 'Bottles'],
+    description: 'Insulated stainless steel water bottles, flasks, and infusers with custom laser branding.',
+    image: '/images/categories/bottle.webp',
     icon: 'droplets'
   },
   {
     slug: 'keychains',
     name: 'Keychains',
-    match: ['Keychains'],
-    description: 'Premium metal, leatherette, and custom engraved keychains.',
-    image: '/images/categories/keychains.jpg',
+    match: ['Keychains', 'Keychain'],
+    description: 'Custom engraved metal, bamboo, and premium leatherette keychains.',
+    image: '/images/categories/keychains.webp',
     icon: 'key'
+  },
+  {
+    slug: 'pen',
+    name: 'Pen',
+    match: ['Pen', 'Pens'],
+    description: 'Executive metallic, matte, and glossy ballpoint pens with precision laser engraving.',
+    image: '/images/categories/pen.webp',
+    icon: 'pen-tool'
   },
   {
     slug: 'combo-sets',
     name: 'Combo sets',
-    match: ['Combo sets'],
-    description: 'Curated corporate gifting hampers, luxury executive bundles, and VIP gift sets.',
-    image: '/images/categories/combo.jpg',
+    match: ['Combo sets', 'Combo set', 'Combo'],
+    description: 'Curated corporate gifting hampers, executive bundles, and VIP presentation sets.',
+    image: '/images/categories/combo-sets.webp',
     icon: 'gift'
   },
   {
     slug: 'pillow',
     name: 'Pillow',
-    match: ['Pillow'],
-    description: 'Customizable plush fur cushions and heart-shaped photo pillows.',
-    image: '/images/categories/pillows.jpg',
+    match: ['Pillow', 'Pillows', 'Cushion', 'Cushions'],
+    description: 'Customizable plush fur cushions, heart-shaped photo pillows, and keepsake cushions.',
+    image: '/images/categories/pillow.webp',
     icon: 'heart'
-  },
-  {
-    slug: 'diery',
-    name: 'Diery',
-    match: ['Diery'],
-    description: 'Executive PU leather diaries, organizers, and notebooks with magnetic clasp.',
-    image: '/images/categories/diaries.jpg',
-    icon: 'book'
-  },
-  {
-    slug: 'sublimation-mugs',
-    name: 'Sublimation Mugs',
-    match: ['Sublimation Mugs'],
-    description: 'Ceramic dual-tone, heart-handle, and patch sublimation coffee mugs.',
-    image: '/images/categories/sublimation-mugs.jpg',
-    icon: 'coffee'
   },
   {
     slug: 'machine',
     name: 'Machine',
-    match: ['Machine'],
-    description: 'Industrial sublimation heat presses and machinery for mugs, caps, and t-shirts.',
-    image: '/images/categories/machines.jpg',
+    match: ['Machine', 'Machines'],
+    description: 'Industrial sublimation heat presses and machinery for mugs, caps, and garments.',
+    image: '/images/categories/machine.webp',
     icon: 'cpu'
   },
   {
-    slug: 'sublimation-accessories',
-    name: 'Sublimation Accessories',
-    match: ['Sublimation Accessories'],
-    description: 'High-density sublimation inks, thermal tapes, and blank mouse pads.',
-    image: '/images/categories/sublimation-accessories.jpg',
-    icon: 'layers'
+    slug: 'sublimation-mugs',
+    name: 'Sublimation Mugs',
+    match: ['Sublimation Mugs', 'Sublimation Mug', 'Mugs', 'Mug'],
+    description: 'Ceramic dual-tone, heart-handle, and color interior sublimation coffee mugs.',
+    image: '/images/categories/sublimation-mugs.webp',
+    icon: 'coffee'
   },
   {
     slug: 'led-light-frames',
     name: 'LED Light Frames',
-    match: ['LED Light Frames'],
-    description: 'Personalized wooden finish backlit LED photo frames.',
-    image: '/images/categories/frames.jpg',
+    match: ['LED Light Frames', 'LED Light Frame', 'LED Frames', 'Frames'],
+    description: 'Personalized wooden finish backlit LED photo frames and glowing wall decor.',
+    image: '/images/categories/led-light-frames.webp',
     icon: 'sun'
   },
   {
-    slug: 'wallet-combo-set',
-    name: 'Wallet Combo set',
-    match: ['Wallet Combo set'],
-    description: 'Men’s bi-fold genuine leather wallets and 3-in-1 / 4-in-1 combo gift boxes.',
-    image: '/images/categories/wallets.jpg',
-    icon: 'briefcase'
-  },
-  {
-    slug: 'fabric-diary',
-    name: 'Fabric Diary',
-    match: ['Fabric Diary'],
-    description: 'Textured fabric finish executive journals and corporate diary sets.',
-    image: '/images/categories/fabric-diary.jpg',
-    icon: 'book-open'
-  },
-  {
-    slug: 'card-holder',
-    name: 'Card Holder',
-    match: ['Card Holder'],
-    description: 'Sleek metal and leather business visiting card cases.',
-    image: '/images/categories/combo.jpg',
-    icon: 'credit-card'
-  },
-  {
-    slug: 'pen-keychain',
-    name: 'Pen & Keychain',
-    match: ['Pen & Keychain'],
-    description: '2-in-1 matched luxury executive pen and keychain gift sets in presentation boxes.',
-    image: '/images/categories/pens.jpg',
-    icon: 'award'
-  },
-  {
-    slug: 'wall-decor',
-    name: 'Wall Decor',
-    match: ['Wall Decor'],
-    description: 'Glowing personalized wall art and decorative illuminated plaques.',
-    image: '/images/categories/frames.jpg',
-    icon: 'image'
-  },
-  {
-    slug: 'mugs',
-    name: 'Mugs',
-    match: ['Mugs'],
-    description: 'Mug collection (all 7 current custom mugs are catalogued under Sublimation Mugs).',
-    image: '/images/categories/sublimation-mugs.jpg',
-    icon: 'coffee'
+    slug: 'sublimation-accessories',
+    name: 'Sublimation Accessories',
+    match: ['Sublimation Accessories', 'Sublimation Accessory', 'Accessories'],
+    description: 'High-density sublimation inks, thermal tapes, and custom sublimation blanks.',
+    image: '/images/categories/sublimation-accessories.webp',
+    icon: 'layers'
   }
 ].map(cat => {
   const count = csvProducts.filter(p =>
+    (p.categorySlug === cat.slug) ||
     p.categories.some(c => cat.match.some(m => m.toLowerCase() === c.toLowerCase()))
   ).length;
   return {
     ...cat,
-    id: cat.slug, // ID is canonical WooCommerce slug
+    id: cat.slug,
     matchCategories: cat.match,
     count
   };
 });
 
 /**
- * Primary navigation categories shown in the header and catalog pills.
- * Uses real WooCommerce slugs and truthful counts.
- * "Mugs" (0 items) is intentionally omitted from the primary menu to prevent landing on empty lists,
- * while "Sublimation Mugs" (7 items) is prominently featured.
+ * Authoritative category navigation list (all 9 live categories)
  */
-export const categories = liveWooCommerceCategories.filter(c => c.count > 0);
+export const categories = liveWooCommerceCategories;
 
 /**
- * Mapping table from user/design aliases to canonical WooCommerce slugs
+ * Mapping table from user/design aliases to canonical slugs
  */
 export const categoryAliases = {
-  // Plural/singular mappings
+  // Singular / Plural aliases
   'bottles': 'bottle',
   'bottle': 'bottle',
   
   'pens': 'pen',
   'pen': 'pen',
   
-  'pillows': 'pillow',
-  'pillow': 'pillow',
-  'pillows & cushions': 'pillow',
-  'pillows-cushions': 'pillow',
+  'keychains': 'keychains',
+  'keychain': 'keychains',
   
   'combo': 'combo-sets',
   'combo sets': 'combo-sets',
   'combo-sets': 'combo-sets',
+  'combos': 'combo-sets',
   
-  'diaries': 'diery',
-  'diary': 'diery',
-  'diery': 'diery',
-  'diaries & wallets': 'diery',
-  'diaries-wallets': 'diery',
-  
-  'accessories': 'sublimation-accessories',
-  'sublimation-accessories': 'sublimation-accessories',
-  'sublimation accessories': 'sublimation-accessories',
-  
-  'frames': 'led-light-frames',
-  'frames & decor': 'led-light-frames',
-  'frames-decor': 'led-light-frames',
-  'led-light-frames': 'led-light-frames',
-  'led light frames': 'led-light-frames',
-  
-  'mugs': 'mugs',
-  'mug': 'mugs',
+  'pillows': 'pillow',
+  'pillow': 'pillow',
+  'pillows & cushions': 'pillow',
+  'pillows-cushions': 'pillow',
+  'cushion': 'pillow',
+  'cushions': 'pillow',
   
   'machines': 'machine',
   'machine': 'machine',
   
-  'keychains': 'keychains',
-  'keychain': 'keychains',
-  
   'sublimation-mugs': 'sublimation-mugs',
   'sublimation mugs': 'sublimation-mugs',
+  'mugs': 'sublimation-mugs',
+  'mug': 'sublimation-mugs',
   
-  'wallet-combo-set': 'wallet-combo-set',
-  'wallet combo set': 'wallet-combo-set',
+  'led-light-frames': 'led-light-frames',
+  'led light frames': 'led-light-frames',
+  'frames': 'led-light-frames',
+  'frame': 'led-light-frames',
+  'led-frames': 'led-light-frames',
   
-  'fabric-diary': 'fabric-diary',
-  'fabric diary': 'fabric-diary',
-  
-  'card-holder': 'card-holder',
-  'card holder': 'card-holder',
-  
-  'pen-keychain': 'pen-keychain',
-  'pen & keychain': 'pen-keychain',
-  
-  'wall-decor': 'wall-decor',
-  'wall decor': 'wall-decor'
+  'sublimation-accessories': 'sublimation-accessories',
+  'sublimation accessories': 'sublimation-accessories',
+  'accessories': 'sublimation-accessories',
+  'accessory': 'sublimation-accessories'
 };
 
 /**
- * Resolves any category identifier (slug, name, or design label alias)
- * to its canonical category object from liveWooCommerceCategories.
+ * Resolves category identifier or alias to its canonical category object
  */
 export function getCategoryBySlugOrAlias(idOrAlias) {
   if (!idOrAlias || idOrAlias === 'all') return null;
@@ -229,8 +152,7 @@ export function getCategoryBySlugOrAlias(idOrAlias) {
 }
 
 /**
- * Determines whether a product belongs to the requested category.
- * Handles canonical WooCommerce slugs, exact names, and design reference aliases.
+ * Determines whether a product belongs to the requested category
  */
 export function matchProductCategory(product, selectedCatId) {
   if (!selectedCatId || selectedCatId === 'all') return true;
@@ -238,24 +160,17 @@ export function matchProductCategory(product, selectedCatId) {
   const key = selectedCatId.toLowerCase().trim();
   const canonicalSlug = categoryAliases[key] || key;
 
-  // Find category in authoritative live list
-  const catObj = liveWooCommerceCategories.find(c => 
-    c.slug === canonicalSlug || 
-    c.name.toLowerCase() === key || 
-    c.name.toLowerCase() === canonicalSlug
-  );
+  if (product.categorySlug && product.categorySlug === canonicalSlug) {
+    return true;
+  }
 
+  const catObj = liveWooCommerceCategories.find(c => c.slug === canonicalSlug);
   if (catObj) {
-    // If the category has no match items or is "mugs" with 0 items, return false (truthful empty state)
-    if (catObj.slug === 'mugs') {
-      return false;
-    }
     return product.categories.some(c =>
       catObj.match.some(m => m.toLowerCase() === c.toLowerCase().trim())
     );
   }
 
-  // Fallback direct matching with product categories
   return product.categories.some(c => {
     const norm = c.toLowerCase().trim();
     return norm === canonicalSlug || norm === key;

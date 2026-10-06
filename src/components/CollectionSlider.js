@@ -1,70 +1,70 @@
 import { categories } from '../data/categories.js';
 
 export function renderCollectionSlider() {
-  // Ordered categories matching live site reference in Pic 3
+  // Ordered categories matching the 9 live categories with authentic photography
   const sliderItems = [
     {
-      id: 'pens',
+      id: 'pen',
       title: 'Pens',
       subtitle: 'Corporate',
-      image: '/images/categories/pens.jpg',
+      image: '/images/categories/pen.webp',
       badge: 'Bestseller'
     },
     {
-      id: 'bottles',
+      id: 'bottle',
       title: 'Bottles',
-      subtitle: 'Steel',
-      image: '/images/categories/bottles.jpg',
+      subtitle: 'Stainless Steel',
+      image: '/images/categories/bottle.webp',
       badge: 'Trending'
     },
     {
-      id: 'combo',
-      title: 'Combo',
-      subtitle: 'Bundles',
-      image: '/images/categories/combo.jpg',
+      id: 'combo-sets',
+      title: 'Combo Sets',
+      subtitle: 'VIP Hampers',
+      image: '/images/categories/combo-sets.webp',
       badge: 'VIP Sets'
     },
     {
-      id: 'pillows',
+      id: 'pillow',
       title: 'Pillows',
-      subtitle: 'Print',
-      image: '/images/categories/pillows.jpg',
+      subtitle: 'Photo Print',
+      image: '/images/categories/pillow.webp',
       badge: 'Photo Gifts'
     },
     {
       id: 'keychains',
       title: 'Keychains',
-      subtitle: 'Custom',
-      image: '/images/categories/keychains.jpg',
+      subtitle: 'Laser Engraved',
+      image: '/images/categories/keychains.webp',
       badge: 'Popular'
-    },
-    {
-      id: 'diaries',
-      title: 'Diaries',
-      subtitle: 'Executive',
-      image: '/images/categories/diaries.jpg',
-      badge: 'Notebooks'
     },
     {
       id: 'sublimation-mugs',
       title: 'Sublimation Mugs',
-      subtitle: 'Ceramic',
-      image: '/images/categories/sublimation-mugs.jpg',
-      badge: 'Dual Tone'
+      subtitle: 'Ceramic Dual-Tone',
+      image: '/images/categories/sublimation-mugs.webp',
+      badge: 'Ceramic'
     },
     {
-      id: 'machines',
+      id: 'machine',
       title: 'Machines',
-      subtitle: 'Press',
-      image: '/images/categories/machines.jpg',
+      subtitle: 'Heat Press',
+      image: '/images/categories/machine.webp',
       badge: 'Heavy Duty'
     },
     {
-      id: 'frames',
-      title: 'Frames',
-      subtitle: 'LED Light',
-      image: '/images/categories/frames.jpg',
-      badge: 'Acrylic 3D'
+      id: 'led-light-frames',
+      title: 'LED Light Frames',
+      subtitle: 'Wooden Glow Wall Art',
+      image: '/images/categories/led-light-frames.webp',
+      badge: 'Backlit'
+    },
+    {
+      id: 'sublimation-accessories',
+      title: 'Sublimation Accessories',
+      subtitle: 'Inks & Thermal Supplies',
+      image: '/images/categories/sublimation-accessories.webp',
+      badge: 'Supplies'
     }
   ];
 

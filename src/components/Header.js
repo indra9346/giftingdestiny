@@ -1,5 +1,6 @@
 import { store } from '../utils/store.js';
 import { categories } from '../data/categories.js';
+import { csvProducts } from '../data/csvProducts.js';
 import { icon } from './icons.js';
 
 export function renderHeader(state) {
@@ -28,7 +29,7 @@ export function renderHeader(state) {
                 <input 
                   type="text" 
                   id="header-search-input" 
-                  placeholder="Search 118 gifts by name, SKU, category..." 
+                  placeholder="Search ${csvProducts.length} gifts by name, category..." 
                   value="${state.searchQuery || ''}"
                   autocomplete="off"
                   aria-autocomplete="list"
@@ -152,7 +153,7 @@ export function renderHeader(state) {
           <div class="mobile-drawer-nav">
             <div class="mobile-nav-title">Categories</div>
             <ul class="mobile-category-list">
-              <li><a href="#" class="mobile-nav-link" data-cat="all">All Products (118)</a></li>
+              <li><a href="#" class="mobile-nav-link" data-cat="all">All Products (${csvProducts.length})</a></li>
               ${categories.map(c => `
                 <li><a href="#" class="mobile-nav-link" data-cat="${c.id}">${c.name} (${c.count})</a></li>
               `).join('')}
