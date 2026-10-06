@@ -83,51 +83,32 @@ function animateProductIntoBag(source, product) {
 }
 
 function bindSiteImageHandling() {
-  // Decode off the main thread where supported, and let the browser defer images
-  // outside the first viewport. Keep branding and lead product photography eager.
-  document.querySelectorAll('img').forEach(image => {
-    image.decoding = 'async';
-    const isLeadImage = image.closest('.site-header, .hero-section, .hero-video-section')
-      || image.id === 'pdp-main-image'
-      || image.id === 'qv-main-img';
-    if (!image.hasAttribute('loading')) image.loading = isLeadImage ? 'eager' : 'lazy';
-    if (isLeadImage) image.fetchPriority = 'high';
-  });
-
-  // Capture image errors so this also covers images created later (for example,
-  // search suggestions and modal contents), not just the initial page markup.
-  if (document.documentElement.dataset.siteImageErrorsBound) return;
-  document.documentElement.dataset.siteImageErrorsBound = 'true';
-  document.addEventListener('error', event => {
-    const image = event.target;
+  const handleImageFailure = image => {
     if (!(image instanceof HTMLImageElement) || image.dataset.siteImageFailed === 'true') return;
 
-    // Special handling for brand logo: ALWAYS restore local SVG logo
-    if (image.classList.contains('brand-logo-img') || image.classList.contains('footer-logo-img-large') || image.alt?.toLowerCase().includes('logo')) {
-      if (image.src.endsWith('/assets/gifting-destiny-original-logo.jpg') || image.src.endsWith('/favicon.svg')) {
-        image.dataset.siteImageFailed = 'true';
-        return;
-      }
-      image.src = '/assets/gifting-destiny-original-logo.jpg';
+    // Prefer the shipped local brand mark when a remote logo URL fails.
+    const isBrandMark = image.classList.contains('brand-logo-img')
+      || image.classList.contains('footer-logo-img-large')
+      || image.alt?.toLowerCase().includes('logo');
+    if (isBrandMark && !image.dataset.localLogoAttempted && !image.src.endsWith('/favicon.svg')) {
+      image.dataset.localLogoAttempted = 'true';
+      image.src = '/favicon.svg';
       return;
     }
 
     const productId = image.closest('[data-product-id]')?.dataset.productId
       || (image.id === 'pdp-main-image' || image.closest('.pdp-thumbnails-strip') ? store.state.selectedProductId : null);
     const product = csvProducts.find(item => item.id === productId);
-    // Do not replace a failed product photo with a category image: that makes
-    // unrelated products look identical. Try only this product's own gallery.
-    if (!product) return;
-    const options = [...new Set([
+    // Try only genuine alternate photos belonging to this product.
+    const options = product ? [...new Set([
       ...(Array.isArray(product.images) ? product.images : []),
       product.secondaryImage,
       product.primaryImage
-    ].filter(Boolean))];
+    ].filter(Boolean))] : [];
 
     const failed = new Set(JSON.parse(image.dataset.failedImageUrls || '[]'));
     failed.add(image.currentSrc || image.src);
     image.dataset.failedImageUrls = JSON.stringify([...failed]);
-
     const next = options.find(url => {
       try { return !failed.has(new URL(url, window.location.href).href); } catch { return false; }
     });
@@ -144,22 +125,45 @@ function bindSiteImageHandling() {
       return;
     }
 
+    const label = product?.name || image.alt || 'Photo temporarily unavailable';
     const fallback = document.createElement('div');
     fallback.className = 'product-image-fallback site-image-fallback';
     fallback.setAttribute('role', 'img');
-    fallback.setAttribute('aria-label', product?.name || image.alt || 'Gifting Destiny Atelier');
+    fallback.setAttribute('aria-label', `Photo unavailable for ${label}`);
     fallback.innerHTML = `
-      <svg class="site-image-fallback-svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: #a0002b; margin-bottom: 0.25rem;">
-        <polyline points="20 12 20 22 4 22 4 12"></polyline>
-        <rect x="2" y="7" width="20" height="5"></rect>
-        <line x1="12" y1="22" x2="12" y2="7"></line>
-        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
-        <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+      <svg class="site-image-fallback-svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+        <circle cx="8.5" cy="9" r="1.5"></circle>
+        <path d="m21 15-5-5L5 20"></path>
       </svg>
-      <span class="site-image-fallback-label">${product?.name || image.alt || 'Gifting Destiny Collection'}</span>
+      <span class="site-image-fallback-label"></span>
     `;
+    fallback.querySelector('.site-image-fallback-label').textContent = label;
     image.replaceWith(fallback);
-  }, true);
+  };
+
+  // Decode off the main thread where supported, and let the browser defer images
+  // outside the first viewport. Keep branding and lead product photography eager.
+  document.querySelectorAll('img').forEach(image => {
+    image.decoding = 'async';
+    const isLeadImage = image.closest('.site-header, .hero-section, .hero-video-section')
+      || image.id === 'pdp-main-image'
+      || image.id === 'qv-main-img';
+    if (!image.hasAttribute('loading')) image.loading = isLeadImage ? 'eager' : 'lazy';
+    if (isLeadImage) image.fetchPriority = 'high';
+    // Cached failures can predate listener registration; send them through the
+    // same recovery path after the event handler below is ready.
+  });
+
+  // Capture image errors so this also covers images created later (for example,
+  // search suggestions and modal contents), not just the initial page markup.
+  if (!document.documentElement.dataset.siteImageErrorsBound) {
+    document.documentElement.dataset.siteImageErrorsBound = 'true';
+    document.addEventListener('error', event => handleImageFailure(event.target), true);
+  }
+  document.querySelectorAll('img').forEach(image => {
+    if (image.complete && image.naturalWidth === 0) queueMicrotask(() => handleImageFailure(image));
+  });
 }
 
 function readPdpPersonalization() {
