@@ -572,12 +572,14 @@ function bindCollectionSliderEvents() {
 
   if (!track) return;
 
-  const firstCard = track.children[0];
-  const secondCard = track.children[1];
-  const scrollAmount = firstCard && secondCard ? secondCard.offsetLeft - firstCard.offsetLeft : 320;
-  const originalCardCount = Math.floor(track.children.length / 2);
-  const loopCard = track.children[originalCardCount];
-  const loopWidth = loopCard ? loopCard.offsetLeft - track.children[0].offsetLeft : 0;
+  const getScrollStep = () => {
+    const firstCard = track.children[0];
+    const secondCard = track.children[1];
+    return firstCard && secondCard ? (secondCard.offsetLeft - firstCard.offsetLeft) : 300;
+  };
+
+  const getMaxScroll = () => Math.max(0, track.scrollWidth - track.clientWidth);
+
   let paused = false;
   let resumeTimer;
   let lastFrameTime = 0;
@@ -589,17 +591,24 @@ function bindCollectionSliderEvents() {
 
   prevBtn?.addEventListener('click', () => {
     pauseAutoScroll();
-    // Jump to the matching repeated set before moving left from the first card.
-    // Because the second set is visually identical, the handoff is seamless.
-    if (track.scrollLeft < scrollAmount && loopWidth > 0) {
-      track.scrollLeft += loopWidth;
+    const step = getScrollStep();
+    const maxScroll = getMaxScroll();
+    if (track.scrollLeft <= 10) {
+      track.scrollTo({ left: maxScroll, behavior: 'smooth' });
+    } else {
+      track.scrollBy({ left: -step, behavior: 'smooth' });
     }
-    track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
   });
 
   nextBtn?.addEventListener('click', () => {
     pauseAutoScroll();
-    track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    const step = getScrollStep();
+    const maxScroll = getMaxScroll();
+    if (track.scrollLeft >= maxScroll - 10) {
+      track.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      track.scrollBy({ left: step, behavior: 'smooth' });
+    }
   });
 
   dots.forEach(dot => {
@@ -607,24 +616,29 @@ function bindCollectionSliderEvents() {
       pauseAutoScroll();
       const idx = parseInt(dot.getAttribute('data-slide-index'), 10);
       const card = track.children[idx];
-      track.scrollTo({ left: card ? card.offsetLeft - track.children[0].offsetLeft : idx * scrollAmount, behavior: 'smooth' });
+      if (card) {
+        track.scrollTo({ left: card.offsetLeft - track.children[0].offsetLeft, behavior: 'smooth' });
+      }
     });
   });
 
-  // Keep the marquee running while a mouse simply rests over it. Pause only
-  // during direct touch/drag, wheel, arrow, or keyboard interaction.
+  // Pause during direct touch/drag, wheel, or focus interaction
   track.addEventListener('focusin', () => { paused = true; });
   track.addEventListener('focusout', () => { paused = false; });
   track.addEventListener('pointerdown', pauseAutoScroll);
   track.addEventListener('wheel', pauseAutoScroll, { passive: true });
+
   track.addEventListener('scroll', () => {
-    const normalizedScroll = loopWidth ? track.scrollLeft % loopWidth : track.scrollLeft;
     let activeIdx = 0;
     let closestDistance = Infinity;
-    for (let index = 0; index < originalCardCount; index += 1) {
+    const origin = track.children[0] ? track.children[0].offsetLeft : 0;
+    for (let index = 0; index < track.children.length; index += 1) {
       const card = track.children[index];
-      const distance = Math.abs(card.offsetLeft - track.children[0].offsetLeft - normalizedScroll);
-      if (distance < closestDistance) { closestDistance = distance; activeIdx = index; }
+      const distance = Math.abs(card.offsetLeft - origin - track.scrollLeft);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        activeIdx = index;
+      }
     }
     dots.forEach((d, i) => {
       if (i === activeIdx) d.classList.add('active');
@@ -633,15 +647,24 @@ function bindCollectionSliderEvents() {
   });
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reducedMotion || loopWidth <= 0) return;
+  if (reducedMotion) return;
+
   track.classList.add('is-auto-scrolling');
   const step = (time) => {
     if (!track.isConnected) return;
     const elapsed = lastFrameTime ? Math.min(time - lastFrameTime, 50) : 0;
     lastFrameTime = time;
-    if (!paused) {
-      track.scrollLeft += elapsed * 0.018; // 18 px/sec: slow, steady, continuous motion.
-      if (track.scrollLeft >= loopWidth) track.scrollLeft -= loopWidth;
+    const maxScroll = getMaxScroll();
+    if (!paused && maxScroll > 0) {
+      track.scrollLeft += elapsed * 0.018; // Slow, smooth continuous motion
+      if (track.scrollLeft >= maxScroll - 1) {
+        pauseAutoScroll();
+        window.setTimeout(() => {
+          if (track.isConnected) {
+            track.scrollTo({ left: 0, behavior: 'smooth' });
+          }
+        }, 1200);
+      }
     }
     collectionAutoScrollFrame = requestAnimationFrame(step);
   };

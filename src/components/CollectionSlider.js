@@ -96,8 +96,8 @@ export function renderCollectionSlider() {
 
           <!-- Sliding Track -->
           <div class="collection-cards-track" id="collection-cards-track" aria-label="Gift collections">
-            ${[...sliderItems, ...sliderItems].map((item, index) => `
-              <div class="collection-slide-card" ${index >= sliderItems.length ? 'aria-hidden="true"' : ''}>
+            ${sliderItems.map((item) => `
+              <div class="collection-slide-card">
                 <div class="slide-card-img-wrap">
                   <img 
                     src="${item.image}" 
@@ -112,7 +112,7 @@ export function renderCollectionSlider() {
                   <h3 class="slide-card-title">${item.title}</h3>
                   <span class="slide-card-subtitle">${item.subtitle}</span>
                   
-                  <button type="button" class="slide-card-view-btn" data-cat="${item.id}" tabindex="${index >= sliderItems.length ? '-1' : '0'}">
+                  <button type="button" class="slide-card-view-btn" data-cat="${item.id}">
                     View
                   </button>
                 </div>

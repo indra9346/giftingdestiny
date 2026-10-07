@@ -4686,6 +4686,15 @@ textarea.form-control {
   border-bottom: 1px solid #f1f5f9;
 }
 
+.gd-gallery-section .section-title {
+  color: #1c160e;
+  text-shadow: none;
+}
+
+.gd-gallery-section .section-subtitle {
+  color: #475569;
+}
+
 .gd-gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -6878,7 +6887,9 @@ textarea.form-control {
   }
   .collection-cards-track { gap: 0.85rem; padding-inline: 0.4rem; scroll-padding-inline: 0.4rem; }
   .collection-slide-card { flex-basis: min(280px, calc(100vw - 3rem)); }
-  .slider-nav-arrow { width: 40px; height: 40px; }
+  .slider-nav-arrow { width: 36px; height: 36px; font-size: 0.9rem; }
+  .slider-prev-btn { left: 4px; }
+  .slider-next-btn { right: 4px; }
 
   /* ==========================================================================
      MOBILE RESPONSIVENESS: DRAWERS, MODALS & NAVIGABLE VIEWS
@@ -7175,16 +7186,28 @@ textarea.form-control {
     gap: 2rem !important;
   }
   .gd-story-visual-wrap {
-    min-height: 260px !important;
+    min-height: auto !important;
+    width: 100% !important;
+    max-width: 480px !important;
+    margin: 0 auto 1.5rem auto !important;
+    position: relative !important;
+  }
+  .story-img-main {
+    border-radius: var(--radius-lg) !important;
+    overflow: hidden !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
+    background: #ffffff !important;
   }
   .story-img-main img {
-    height: 240px !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: 400px !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 auto !important;
   }
   .story-img-floating {
-    width: 140px !important;
-    height: 140px !important;
-    bottom: -15px !important;
-    right: 5px !important;
+    display: none !important;
   }
   .gd-story-content {
     padding: 0 !important;
