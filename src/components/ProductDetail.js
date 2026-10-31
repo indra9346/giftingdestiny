@@ -2,6 +2,7 @@ import { csvProducts } from '../data/csvProducts.js';
 import { categories, getCategoryBySlugOrAlias, matchProductCategory } from '../data/categories.js';
 import { store } from '../utils/store.js';
 import { icon } from './icons.js';
+import { getMugPrintArea } from '../data/mugPrintAreas.js';
 
 export function formatProductDescription(raw) {
   if (!raw) return '';
@@ -83,7 +84,10 @@ export function renderProductDetail(state) {
   const images = (product.images && product.images.length > 0) 
     ? product.images 
     : [product.primaryImage];
-  const isDrinkware = /\b(mug|glass|cup|tumbler)\b/i.test(`${product.name} ${product.primaryCategory || ''} ${(product.categories || []).join(' ')}`);
+  // Name preview only for actual mugs whose photos are calibrated (not the mug press machines).
+  const isDrinkware = /\b(mug|glass|cup|tumbler)\b/i.test(`${product.name} ${product.primaryCategory || ''} ${(product.categories || []).join(' ')}`)
+    && !/\b(machine|press)\b/i.test(product.name)
+    && images.some(image => getMugPrintArea(image));
 
   return `
     <div class="product-detail-page">
@@ -100,7 +104,7 @@ export function renderProductDetail(state) {
         <div class="product-detail-grid">
           <!-- Left Column: Image Gallery -->
           <div class="product-gallery-section">
-            <div class="main-image-container">
+            <div class="main-image-container${isDrinkware ? ' has-print-preview' : ''}">
               <img 
                 src="${images[0]}" 
                 alt="${product.name}" 
