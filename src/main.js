@@ -1,5 +1,6 @@
 import './style.css';
 import './blog.css';
+import './storefront.css';
 import { store } from './utils/store.js';
 import { csvProducts } from './data/csvProducts.js';
 import { categories, matchProductCategory, getCategoryBySlugOrAlias } from './data/categories.js';
@@ -17,6 +18,7 @@ import {
   renderBlogPage, renderBlogPost, initBlogPage, teardownBlogPage, refreshBlogStories, noteBlogRoute, blogPageMeta
 } from './components/BlogPage.js';
 import { ensureBlogPosts } from './data/blog.js';
+import { initBrandCloth } from './components/BrandCloth.js';
 import { renderFaqPage } from './components/FaqPage.js';
 import { renderFooter } from './components/Footer.js';
 import { renderCartDrawer, renderEnquiryDrawer, renderActiveModal } from './components/Modals.js';
@@ -135,6 +137,8 @@ function bindSiteImageHandling() {
     });
 
     if (next) {
+      // A missing card-size copy falls back to the original photo.
+      image.removeAttribute('srcset');
       image.src = next;
       return;
     }
@@ -184,6 +188,60 @@ function bindSiteImageHandling() {
   }
   document.querySelectorAll('img').forEach(image => {
     if (image.complete && image.naturalWidth === 0) queueMicrotask(() => handleImageFailure(image));
+  });
+}
+
+// Product and category photos shimmer until decoded, then fade in. Photos
+// already in the cache (re-renders) show at once without a fade.
+function bindPhotoLoading() {
+  document.querySelectorAll('.product-card-img, .slide-card-img').forEach(image => {
+    const wrap = image.parentElement;
+    if (!wrap) return;
+    if (image.complete && image.naturalWidth > 0) {
+      wrap.classList.add('photo-ready', 'photo-instant');
+      return;
+    }
+    const done = () => wrap.classList.add('photo-ready');
+    image.addEventListener('load', done, { once: true });
+    image.addEventListener('error', done, { once: true });
+  });
+}
+
+// A slim gold bar at the top shows how many first-screen photos have loaded.
+let photoProgressRun = 0;
+function trackFirstScreenPhotos() {
+  const run = ++photoProgressRun;
+  const limit = window.innerHeight * 1.6;
+  const pending = [...document.querySelectorAll('main img')].filter(image => {
+    if (image.complete) return false;
+    const rect = image.getBoundingClientRect();
+    return rect.width > 0 && rect.top < limit && rect.bottom > -100;
+  });
+  let bar = document.getElementById('gd-photo-progress');
+  if (!pending.length) {
+    bar?.classList.remove('is-active');
+    return;
+  }
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'gd-photo-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    bar.innerHTML = '<span></span>';
+    document.body.appendChild(bar);
+  }
+  const fill = bar.firstElementChild;
+  let loaded = 0;
+  const update = () => {
+    if (run !== photoProgressRun) return;
+    fill.style.transform = `scaleX(${0.08 + 0.92 * (loaded / pending.length)})`;
+    if (loaded >= pending.length) window.setTimeout(() => run === photoProgressRun && bar.classList.remove('is-active'), 350);
+  };
+  bar.classList.add('is-active');
+  update();
+  pending.forEach(image => {
+    const step = () => { loaded += 1; update(); };
+    image.addEventListener('load', step, { once: true });
+    image.addEventListener('error', step, { once: true });
   });
 }
 
@@ -313,6 +371,8 @@ function renderApp() {
 
   bindEvents();
   bindSiteImageHandling();
+  bindPhotoLoading();
+  trackFirstScreenPhotos();
   applyPageMeta(state);
   if (state.currentView === 'blog' || state.currentView === 'blogPost') initBlogPage();
 
@@ -1032,6 +1092,7 @@ store.subscribe(() => {
 
 window.addEventListener('popstate', () => store.restoreLocation());
 store.restoreLocation();
+initBrandCloth();
 
 // Fetch the blog quietly once the page is idle, so opening Blog is instant.
 const prefetchBlog = () => ensureBlogPosts(onBlogData);
