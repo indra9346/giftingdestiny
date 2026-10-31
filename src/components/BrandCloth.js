@@ -55,6 +55,8 @@ function canPlay() {
   if (playing || document.hidden) return false;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
   if (document.querySelector('.mobile-drawer-overlay.open, .modal-overlay')) return false;
+  // Never cover the header search while someone is using it.
+  if (document.activeElement?.closest?.('.site-header')) return false;
   const { logo, actions } = headerParts();
   if (!logo || !actions) return false;
   const rect = logo.getBoundingClientRect();
