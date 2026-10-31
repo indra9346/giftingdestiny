@@ -7438,7 +7438,8 @@ main > * { min-width: 0; max-width: 100%; }
 /* Laptop / Desktop UI (min-width: 769px) */
 @media (min-width: 769px) {
   .hero-video-banner {
-    min-height: min(86vh, 740px);
+    /* Shorter so the product listing starts within the first screen. */
+    min-height: min(72vh, 620px);
     display: flex;
     align-items: center;
     position: relative;

@@ -3,7 +3,9 @@ import { categories, matchProductCategory, getCategoryBySlugOrAlias, categoryAli
 import { store } from '../utils/store.js';
 import { icon } from './icons.js';
 
-export function renderProductCatalog(state, isFullPage = false) {
+// showAll: the home page lists every product (e-commerce style) and its
+// category pills filter in place instead of opening the shop page.
+export function renderProductCatalog(state, isFullPage = false, { showAll = false } = {}) {
   const selectedCatId = state.selectedCategory || 'all';
   const searchQuery = (state.searchQuery || '').toLowerCase().trim();
 
@@ -32,9 +34,12 @@ export function renderProductCatalog(state, isFullPage = false) {
     filtered.sort((a, b) => b.name.localeCompare(a.name));
   }
 
-  // If on homepage, display top 8 curated products
-  const displayProducts = isFullPage ? filtered.slice(0, state.visibleProducts || 16) : filtered.slice(0, 8);
+  const displayProducts = showAll
+    ? filtered
+    : isFullPage ? filtered.slice(0, state.visibleProducts || 16) : filtered.slice(0, 8);
   const activeCategoryTitle = activeCategoryObj ? activeCategoryObj.name : 'All Collections';
+  const showListing = isFullPage || showAll;
+  const pillAttr = showAll ? 'data-home-cat' : 'data-cat';
 
   return `
     <section class="section catalog-section" id="products-catalog-section">
@@ -45,10 +50,10 @@ export function renderProductCatalog(state, isFullPage = false) {
             <span>OUR COLLECTION</span>
           </div>
           <h2 class="section-title">
-            ${isFullPage ? activeCategoryTitle : 'Featured Product Catalogue'}
+            ${showListing ? activeCategoryTitle : 'Featured Product Catalogue'}
           </h2>
           <p class="section-subtitle">
-            ${isFullPage 
+            ${showListing
               ? `Showing ${filtered.length} authentic handcrafted items available for bespoke customization & bulk dispatch.`
               : 'Explore our signature personalized pens, sublimation bottles, plush fur cushions, and luxury gift hampers.'
             }
@@ -60,23 +65,23 @@ export function renderProductCatalog(state, isFullPage = false) {
           <div class="category-pills-scroll">
             <button 
               type="button" 
-              class="cat-filter-pill ${canonicalSlug === 'all' || selectedCatId === 'all' ? 'active' : ''}" 
-              data-cat="all"
+              class="cat-filter-pill ${canonicalSlug === 'all' || selectedCatId === 'all' ? 'active' : ''}"
+              ${pillAttr}="all"
             >
               All (${csvProducts.length})
             </button>
             ${categories.map(c => `
-              <button 
-                type="button" 
-                class="cat-filter-pill ${canonicalSlug === c.id || selectedCatId === c.id ? 'active' : ''}" 
-                data-cat="${c.id}"
+              <button
+                type="button"
+                class="cat-filter-pill ${canonicalSlug === c.id || selectedCatId === c.id ? 'active' : ''}"
+                ${pillAttr}="${c.id}"
               >
                 ${c.name} (${c.count})
               </button>
             `).join('')}
           </div>
 
-          ${isFullPage ? `
+          ${showListing ? `
             <div class="catalog-sort-box">
               <label for="catalog-sort-select" class="sort-label">Sort By:</label>
               <select id="catalog-sort-select" class="sort-select">
@@ -196,7 +201,7 @@ export function renderProductCatalog(state, isFullPage = false) {
           </div>
         ` : ''}
 
-        ${!isFullPage && filtered.length > 8 ? `
+        ${!isFullPage && !showAll && filtered.length > 8 ? `
           <div class="catalog-view-all-row">
             <button class="btn btn-gd-outline" data-view="shop" data-cat="${selectedCatId}">
               <span>View All ${activeCategoryTitle} (${filtered.length} Items)</span>
