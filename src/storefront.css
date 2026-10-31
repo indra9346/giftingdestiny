@@ -450,3 +450,15 @@ html.gd-reel-on .site-header .brand-logo-img {
     overflow-wrap: normal;
   }
 }
+
+/* While the cloth is out, the header text and search it passes over fade
+   away so nothing peeks out above or below it; they return as it winds in. */
+.site-header .brand-text,
+.site-header .header-search-box {
+  transition: opacity 0.35s ease;
+}
+
+html.gd-reel-on .site-header .brand-text,
+html.gd-reel-on .site-header .header-search-box {
+  opacity: 0;
+}
