@@ -38,6 +38,7 @@ export function renderFooter() {
             <ul class="footer-nav-list">
               <li><a href="javascript:void(0)" data-view="home">Home</a></li>
               <li><a href="javascript:void(0)" data-view="about">About Us</a></li>
+              <li><a href="javascript:void(0)" data-view="blog">Blog</a></li>
               <li><a href="javascript:void(0)" data-view="contact">Contact us</a></li>
             </ul>
           </div>

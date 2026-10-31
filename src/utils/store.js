@@ -12,9 +12,10 @@ function readWishlist() {
 class AppStore {
   constructor() {
     this.state = {
-      currentView: 'home', // 'home', 'shop', 'product', 'corporate', 'about', 'contact', 'blog', 'faq'
+      currentView: 'home', // 'home', 'shop', 'product', 'corporate', 'about', 'contact', 'blog', 'blogPost', 'faq'
       selectedCategory: 'all',
       selectedProductId: null,
+      selectedPostSlug: null,
       searchQuery: '',
       sortBy: 'featured',
       visibleProducts: 16,
@@ -69,6 +70,16 @@ class AppStore {
     }
   }
 
+  navigateToPost(slug) {
+    if (!slug) return;
+    this.state.selectedPostSlug = slug;
+    this.state.currentView = 'blogPost';
+    this.state.activeModal = null;
+    this.syncLocation();
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    this.notify();
+  }
+
   navigateToCategory(catId) {
     this.state.selectedCategory = catId;
     this.state.currentView = 'shop';
@@ -82,9 +93,11 @@ class AppStore {
   }
 
   syncLocation() {
-    const { currentView, selectedCategory, selectedProductId } = this.state;
+    const { currentView, selectedCategory, selectedProductId, selectedPostSlug } = this.state;
     const route = currentView === 'product'
       ? `/product/${encodeURIComponent(csvProducts.find(p => p.id === selectedProductId)?.slug || selectedProductId)}`
+      : currentView === 'blogPost'
+        ? `/blog/${encodeURIComponent(selectedPostSlug)}`
       : currentView === 'shop'
         ? `/shop${selectedCategory && selectedCategory !== 'all' ? `?category=${encodeURIComponent(selectedCategory)}` : ''}`
         : currentView === 'home' ? '/' : `/${currentView}`;
@@ -101,6 +114,9 @@ class AppStore {
         this.state.currentView = 'product';
         this.state.selectedProductId = product.id;
       } else this.state.currentView = 'shop';
+    } else if (view[0] === 'blog' && view[1]) {
+      this.state.currentView = 'blogPost';
+      this.state.selectedPostSlug = decodeURIComponent(view[1]);
     } else if (view[0] === 'shop') {
       this.state.currentView = 'shop';
       this.state.selectedCategory = new URLSearchParams(query).get('category') || 'all';
