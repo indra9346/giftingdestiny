@@ -2,6 +2,7 @@ import { csvProducts } from '../data/csvProducts.js';
 import { categories, matchProductCategory, getCategoryBySlugOrAlias, categoryAliases } from '../data/categories.js';
 import { store } from '../utils/store.js';
 import { icon } from './icons.js';
+import { thumbSet, CARD_SIZES } from '../utils/images.js';
 
 // showAll: the home page lists every product (e-commerce style) and its
 // category pills filter in place instead of opening the shop page.
@@ -117,20 +118,25 @@ export function renderProductCatalog(state, isFullPage = false, { showAll = fals
           </div>
         ` : `
           <div class="products-grid-4col">
-            ${displayProducts.map(p => {
+            ${displayProducts.map((p, index) => {
               const isWishlisted = store.isWishlisted(p.id);
               const primaryCat = p.categories[0] || 'Gifts';
               const stockLabel = p.inStock ? 'In Stock' : 'Out of Stock';
+              const photo = thumbSet(p.primaryImage);
 
               return `
                 <div class="product-card" data-product-id="${p.id}">
                   <!-- Card Image Wrap -->
                   <div class="product-card-img-wrap" data-action="view-pdp" data-id="${p.id}">
-                    <img 
-                      src="${p.primaryImage}" 
-                      alt="${p.name}" 
-                      class="product-card-img" 
-                      loading="lazy" 
+                    <img
+                      src="${photo.src}"
+                      ${photo.srcset ? `srcset="${photo.srcset}" sizes="${CARD_SIZES}"` : ''}
+                      width="400" height="432"
+                      alt="${p.name}"
+                      class="product-card-img"
+                      loading="${index < 8 ? 'eager' : 'lazy'}"
+                      ${index < 4 ? 'fetchpriority="high"' : ''}
+                      decoding="async"
                     />
                     
                     <button 

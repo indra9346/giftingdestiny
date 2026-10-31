@@ -1,4 +1,5 @@
 import { categories } from '../data/categories.js';
+import { thumbSet, CARD_SIZES } from '../utils/images.js';
 
 export function renderCollectionSlider() {
   // Ordered categories matching the 9 live categories with authentic photography
@@ -96,14 +97,18 @@ export function renderCollectionSlider() {
 
           <!-- Sliding Track -->
           <div class="collection-cards-track" id="collection-cards-track" aria-label="Gift collections">
-            ${sliderItems.map((item) => `
+            ${sliderItems.map((item) => {
+              const photo = thumbSet(item.image);
+              return `
               <div class="collection-slide-card">
                 <div class="slide-card-img-wrap">
-                  <img 
-                    src="${item.image}" 
-                    alt="${item.title}" 
-                    class="slide-card-img" 
-                    loading="lazy" 
+                  <img
+                    src="${photo.src}"
+                    ${photo.srcset ? `srcset="${photo.srcset}" sizes="${CARD_SIZES}"` : ''}
+                    alt="${item.title}"
+                    class="slide-card-img"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div class="slide-card-wood-deck"></div>
                 </div>
@@ -117,7 +122,8 @@ export function renderCollectionSlider() {
                   </button>
                 </div>
               </div>
-            `).join('')}
+            `;
+            }).join('')}
           </div>
 
           <!-- Right Arrow Button -->
