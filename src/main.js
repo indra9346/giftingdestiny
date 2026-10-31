@@ -222,14 +222,12 @@ function renderApp() {
   noteBlogRoute(state);
 
   if (state.currentView === 'home') {
+    // Storefront home: every product down to the footer. About, Corporate,
+    // Gallery and Contact stay on their own pages in the menu.
     mainContent = `
       ${renderHero()}
       ${renderCollectionSlider()}
-      ${renderAboutSection(false)}
-      ${renderCorporateGifting()}
-      ${renderProductCatalog(state, false)}
-      ${renderShowcaseGallery()}
-      ${renderContactSection()}
+      ${renderProductCatalog(state, false, { showAll: true })}
     `;
   } else if (state.currentView === 'shop') {
     const activeCatObj = getCategoryBySlugOrAlias(state.selectedCategory);
@@ -408,6 +406,20 @@ function bindEvents() {
       const cat = el.getAttribute('data-cat');
       store.navigateToCategory(cat);
       closeMobileDrawer();
+    });
+  });
+
+  // Home catalogue pills filter the home listing in place.
+  document.querySelectorAll('[data-home-cat]').forEach(el => {
+    el.addEventListener('click', () => {
+      store.setCategory(el.getAttribute('data-home-cat'));
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        const section = document.getElementById('products-catalog-section');
+        const header = document.querySelector('.site-header');
+        if (!section) return;
+        const top = section.getBoundingClientRect().top + window.scrollY - (header?.offsetHeight || 0);
+        if (window.scrollY > top) window.scrollTo({ top, behavior: 'smooth' });
+      }));
     });
   });
 
