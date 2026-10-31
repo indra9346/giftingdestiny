@@ -1,4 +1,5 @@
 import './style.css';
+import './blog.css';
 import { store } from './utils/store.js';
 import { csvProducts } from './data/csvProducts.js';
 import { categories, matchProductCategory, getCategoryBySlugOrAlias } from './data/categories.js';
@@ -12,14 +13,33 @@ import { renderCorporateGifting } from './components/CorporateGifting.js';
 import { renderAboutSection } from './components/AboutSection.js';
 import { renderShowcaseGallery } from './components/ShowcaseGallery.js';
 import { renderContactSection } from './components/ContactSection.js';
-import { renderBlogPage } from './components/BlogPage.js';
+import {
+  renderBlogPage, renderBlogPost, initBlogPage, teardownBlogPage, refreshBlogStories, noteBlogRoute, blogPageMeta
+} from './components/BlogPage.js';
+import { ensureBlogPosts } from './data/blog.js';
 import { renderFaqPage } from './components/FaqPage.js';
 import { renderFooter } from './components/Footer.js';
 import { renderCartDrawer, renderEnquiryDrawer, renderActiveModal } from './components/Modals.js';
 import confetti from 'canvas-confetti';
 
 const GD_PHONE = '918660940018'; // Verified from live site footer in Pic 4
+const DEFAULT_TITLE = document.title;
+const DEFAULT_DESCRIPTION = document.querySelector('meta[name="description"]')?.content || '';
 let collectionAutoScrollFrame = null;
+
+// Blog posts arrived: refresh the blog in place if it is open; other pages are left alone.
+function onBlogData() {
+  const view = store.state.currentView;
+  if (view !== 'blog' && view !== 'blogPost') return;
+  if (!refreshBlogStories()) store.notify();
+}
+
+function applyPageMeta(state) {
+  const meta = blogPageMeta(state);
+  document.title = meta?.title || DEFAULT_TITLE;
+  const description = document.querySelector('meta[name="description"]');
+  if (description) description.content = meta?.description || DEFAULT_DESCRIPTION;
+}
 let heroHeaderObserver = null;
 let heroViewportResizeHandler = null;
 
@@ -90,9 +110,10 @@ function bindSiteImageHandling() {
     const isBrandMark = image.classList.contains('brand-logo-img')
       || image.classList.contains('footer-logo-img-large')
       || image.alt?.toLowerCase().includes('logo');
-    if (isBrandMark && !image.dataset.localLogoAttempted && !image.src.endsWith('/favicon.svg')) {
+    const localLogo = '/assets/gifting-destiny-original-logo.jpg';
+    if (isBrandMark && !image.dataset.localLogoAttempted && !image.src.endsWith(localLogo)) {
       image.dataset.localLogoAttempted = 'true';
-      image.src = '/favicon.svg';
+      image.src = localLogo;
       return;
     }
 
@@ -197,6 +218,8 @@ function renderApp() {
   const videoPosition = oldVideo && !oldVideo.paused ? oldVideo.currentTime : null;
 
   let mainContent = '';
+  teardownBlogPage();
+  noteBlogRoute(state);
 
   if (state.currentView === 'home') {
     mainContent = `
@@ -272,7 +295,11 @@ function renderApp() {
       ${renderContactSection()}
     `;
   } else if (state.currentView === 'blog') {
+    ensureBlogPosts(onBlogData);
     mainContent = renderBlogPage();
+  } else if (state.currentView === 'blogPost') {
+    ensureBlogPosts(onBlogData);
+    mainContent = renderBlogPost(state);
   } else if (state.currentView === 'faq') {
     mainContent = renderFaqPage();
   }
@@ -288,6 +315,8 @@ function renderApp() {
 
   bindEvents();
   bindSiteImageHandling();
+  applyPageMeta(state);
+  if (state.currentView === 'blog' || state.currentView === 'blogPost') initBlogPage();
 
   const newVideo = document.getElementById('hero-bgv');
   if (newVideo) {
@@ -991,3 +1020,8 @@ store.subscribe(() => {
 
 window.addEventListener('popstate', () => store.restoreLocation());
 store.restoreLocation();
+
+// Fetch the blog quietly once the page is idle, so opening Blog is instant.
+const prefetchBlog = () => ensureBlogPosts(onBlogData);
+if ('requestIdleCallback' in window) window.requestIdleCallback(prefetchBlog, { timeout: 6000 });
+else window.setTimeout(prefetchBlog, 3000);

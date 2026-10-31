@@ -129,6 +129,9 @@ export function renderHeader(state) {
               </a>
             </li>
           </ul>
+          <a href="#/blog" class="nav-blog-pill ${state.currentView === 'blog' || state.currentView === 'blogPost' ? 'active' : ''}" data-view="blog">
+            <span class="nav-blog-spark" aria-hidden="true">✦</span> Blog
+          </a>
         </div>
       </nav>
 
@@ -164,6 +167,7 @@ export function renderHeader(state) {
               <li><a href="#" class="mobile-nav-link" data-view="home">Home</a></li>
               <li><a href="#" class="mobile-nav-link" data-view="corporate">Corporate Gifting (B2B)</a></li>
               <li><a href="#" class="mobile-nav-link" data-view="about">About Atelier</a></li>
+              <li><a href="#/blog" class="mobile-nav-link" data-view="blog">Blog &amp; Gifting Guides</a></li>
               <li><a href="#" class="mobile-nav-link" data-view="contact">Contact &amp; Workshop</a></li>
               <li><a href="#" class="mobile-nav-link" data-view="faq">FAQs &amp; Orders</a></li>
             </ul>
