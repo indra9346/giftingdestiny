@@ -97,10 +97,12 @@ export function renderCollectionSlider() {
 
           <!-- Sliding Track -->
           <div class="collection-cards-track" id="collection-cards-track" aria-label="Gift collections">
-            ${sliderItems.map((item) => {
+            ${[...sliderItems, ...sliderItems].map((item, index) => {
               const photo = thumbSet(item.image);
+              // The second set is a visual copy so the auto-scroll can loop seamlessly.
+              const isCopy = index >= sliderItems.length;
               return `
-              <div class="collection-slide-card">
+              <div class="collection-slide-card"${isCopy ? ' aria-hidden="true" data-loop-copy' : ''}>
                 <div class="slide-card-img-wrap">
                   <img
                     src="${photo.src}"
@@ -117,7 +119,7 @@ export function renderCollectionSlider() {
                   <h3 class="slide-card-title">${item.title}</h3>
                   <span class="slide-card-subtitle">${item.subtitle}</span>
                   
-                  <button type="button" class="slide-card-view-btn" data-cat="${item.id}">
+                  <button type="button" class="slide-card-view-btn" data-cat="${item.id}"${isCopy ? ' tabindex="-1"' : ''}>
                     View
                   </button>
                 </div>

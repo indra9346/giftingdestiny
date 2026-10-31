@@ -19,6 +19,7 @@ import {
 } from './components/BlogPage.js';
 import { ensureBlogPosts } from './data/blog.js';
 import { initBrandCloth } from './components/BrandCloth.js';
+import { getMugPrintArea } from './data/mugPrintAreas.js';
 import { renderFaqPage } from './components/FaqPage.js';
 import { renderFooter } from './components/Footer.js';
 import { renderCartDrawer, renderEnquiryDrawer, renderActiveModal } from './components/Modals.js';
@@ -28,6 +29,7 @@ const GD_PHONE = '918660940018'; // Verified from live site footer in Pic 4
 const DEFAULT_TITLE = document.title;
 const DEFAULT_DESCRIPTION = document.querySelector('meta[name="description"]')?.content || '';
 let collectionAutoScrollFrame = null;
+let collectionScrollPosition = 0; // kept across re-renders so the slider never jumps back
 
 // Blog posts arrived: refresh the blog in place if it is open; other pages are left alone.
 function onBlogData() {
@@ -257,16 +259,70 @@ function readPdpPersonalization() {
   };
 }
 
+// Width of `text` at 100px in the preview's current lettering style.
+function measurePrintText(preview, text) {
+  const probe = document.createElement('span');
+  probe.className = 'drinkware-print-probe';
+  probe.dataset.printStyle = preview.dataset.printStyle;
+  probe.textContent = text;
+  preview.parentElement.appendChild(probe);
+  const width = probe.getBoundingClientRect().width;
+  probe.remove();
+  return width;
+}
+
+// Places the typed name on the mug's printable face in the photo that is
+// showing: centred on the calibrated spot, turned with the mug, and sized
+// to fit the face (wrapping to two lines when one line would be too small).
+function placeMugPrint(preview, text) {
+  const image = document.getElementById('pdp-main-image');
+  const area = getMugPrintArea(image?.currentSrc || image?.src);
+  if (!image || !area || !image.naturalWidth || !text) return false;
+  const style = getComputedStyle(image);
+  const padX = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+  const padY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+  const boxW = image.clientWidth - padX;
+  const boxH = image.clientHeight - padY;
+  const scale = Math.min(boxW / image.naturalWidth, boxH / image.naturalHeight);
+  const drawnW = image.naturalWidth * scale;
+  const drawnH = image.naturalHeight * scale;
+  const left = image.offsetLeft + parseFloat(style.paddingLeft) + (boxW - drawnW) / 2;
+  const top = image.offsetTop + parseFloat(style.paddingTop) + (boxH - drawnH) / 2;
+  const faceW = (area.w / 100) * drawnW;
+
+  const maxSize = drawnH * 0.075;
+  const minOneLine = drawnH * 0.03;
+  let lines = [text];
+  let size = Math.min(maxSize, (faceW * 0.96 * 100) / measurePrintText(preview, text));
+  const words = text.split(/\s+/);
+  if (size < minOneLine && words.length > 1) {
+    // Split into the two most even lines.
+    let best = null;
+    for (let i = 1; i < words.length; i += 1) {
+      const pair = [words.slice(0, i).join(' '), words.slice(i).join(' ')];
+      const widest = Math.max(...pair.map(line => measurePrintText(preview, line)));
+      if (!best || widest < best.widest) best = { pair, widest };
+    }
+    lines = best.pair;
+    size = Math.min(drawnH * 0.06, (faceW * 0.96 * 100) / best.widest);
+  }
+  preview.textContent = lines.join('\n');
+  preview.style.left = `${left + (area.x / 100) * drawnW}px`;
+  preview.style.top = `${top + (area.y / 100) * drawnH}px`;
+  preview.style.width = `${faceW}px`;
+  preview.style.fontSize = `${size}px`;
+  preview.style.transform = `translate(-50%, -50%) rotate(${area.rot}deg)`;
+  return true;
+}
+
 function updateDrinkwarePreview() {
   const input = document.getElementById('pdp-custom-text');
   const preview = document.getElementById('drinkware-print-preview');
   if (!input || !preview) return;
   const text = input.value.trim();
-  preview.textContent = text;
-  preview.hidden = !text;
   preview.style.setProperty('--print-color', document.querySelector('.print-color-swatch.active')?.dataset.printColor || '#172554');
-  preview.style.setProperty('--print-scale', String(Math.max(0.68, 1 - Math.max(0, text.length - 14) * 0.018)));
   preview.dataset.printStyle = document.querySelector('.print-style-option.active')?.dataset.printStyle || 'serif';
+  preview.hidden = !placeMugPrint(preview, text);
 }
 
 function renderApp() {
@@ -679,42 +735,54 @@ function bindCollectionSliderEvents() {
     return firstCard && secondCard ? (secondCard.offsetLeft - firstCard.offsetLeft) : 300;
   };
 
-  const getMaxScroll = () => Math.max(0, track.scrollWidth - track.clientWidth);
+  // The cards are rendered twice; jumping back by one set's width when the
+  // copy is reached makes the loop endless and invisible.
+  const realCount = track.querySelectorAll('.collection-slide-card:not([data-loop-copy])').length;
+  const getLoopWidth = () => {
+    const first = track.children[0];
+    const copy = track.children[realCount];
+    return first && copy ? copy.offsetLeft - first.offsetLeft : 0;
+  };
+  const jumpTo = left => track.scrollTo({ left, behavior: 'instant' });
+  const wrapPosition = () => {
+    const loop = getLoopWidth();
+    if (!loop) return;
+    if (track.scrollLeft >= loop) jumpTo(track.scrollLeft - loop);
+    else if (track.scrollLeft < 0) jumpTo(track.scrollLeft + loop);
+  };
 
   let paused = false;
   let resumeTimer;
   let lastFrameTime = 0;
+  jumpTo(collectionScrollPosition);
+  let position = track.scrollLeft;
   const pauseAutoScroll = () => {
     paused = true;
     clearTimeout(resumeTimer);
-    resumeTimer = window.setTimeout(() => { paused = false; }, 4500);
+    resumeTimer = window.setTimeout(() => {
+      paused = false;
+      position = track.scrollLeft;
+    }, 3000);
   };
 
   prevBtn?.addEventListener('click', () => {
     pauseAutoScroll();
     const step = getScrollStep();
-    const maxScroll = getMaxScroll();
-    if (track.scrollLeft <= 10) {
-      track.scrollTo({ left: maxScroll, behavior: 'smooth' });
-    } else {
-      track.scrollBy({ left: -step, behavior: 'smooth' });
-    }
+    if (track.scrollLeft - step < 0) jumpTo(track.scrollLeft + getLoopWidth());
+    track.scrollBy({ left: -step, behavior: 'smooth' });
   });
 
   nextBtn?.addEventListener('click', () => {
     pauseAutoScroll();
     const step = getScrollStep();
-    const maxScroll = getMaxScroll();
-    if (track.scrollLeft >= maxScroll - 10) {
-      track.scrollTo({ left: 0, behavior: 'smooth' });
-    } else {
-      track.scrollBy({ left: step, behavior: 'smooth' });
-    }
+    if (track.scrollLeft + step >= getLoopWidth()) jumpTo(track.scrollLeft - getLoopWidth());
+    track.scrollBy({ left: step, behavior: 'smooth' });
   });
 
   dots.forEach(dot => {
     dot.addEventListener('click', () => {
       pauseAutoScroll();
+      wrapPosition();
       const idx = parseInt(dot.getAttribute('data-slide-index'), 10);
       const card = track.children[idx];
       if (card) {
@@ -730,6 +798,7 @@ function bindCollectionSliderEvents() {
   track.addEventListener('wheel', pauseAutoScroll, { passive: true });
 
   track.addEventListener('scroll', () => {
+    collectionScrollPosition = track.scrollLeft;
     let activeIdx = 0;
     let closestDistance = Infinity;
     const origin = track.children[0] ? track.children[0].offsetLeft : 0;
@@ -742,7 +811,7 @@ function bindCollectionSliderEvents() {
       }
     }
     dots.forEach((d, i) => {
-      if (i === activeIdx) d.classList.add('active');
+      if (i === activeIdx % Math.max(realCount, 1)) d.classList.add('active');
       else d.classList.remove('active');
     });
   });
@@ -755,17 +824,12 @@ function bindCollectionSliderEvents() {
     if (!track.isConnected) return;
     const elapsed = lastFrameTime ? Math.min(time - lastFrameTime, 50) : 0;
     lastFrameTime = time;
-    const maxScroll = getMaxScroll();
-    if (!paused && maxScroll > 0) {
-      track.scrollLeft += elapsed * 0.018; // Slow, smooth continuous motion
-      if (track.scrollLeft >= maxScroll - 1) {
-        pauseAutoScroll();
-        window.setTimeout(() => {
-          if (track.isConnected) {
-            track.scrollTo({ left: 0, behavior: 'smooth' });
-          }
-        }, 1200);
-      }
+    const loop = getLoopWidth();
+    if (!paused && loop > 0) {
+      // One card every ~4 s, looping forever.
+      position += elapsed * (getScrollStep() / 4000);
+      if (position >= loop) position -= loop;
+      track.scrollLeft = position;
     }
     collectionAutoScrollFrame = requestAnimationFrame(step);
   };
@@ -793,6 +857,18 @@ function bindProductDetailEvents() {
   });
 
   document.getElementById('pdp-custom-text')?.addEventListener('input', updateDrinkwarePreview);
+  if (document.getElementById('drinkware-print-preview')) {
+    // Re-place the name when the photo (re)loads or the layout changes size.
+    const mainImg = document.getElementById('pdp-main-image');
+    mainImg?.addEventListener('load', updateDrinkwarePreview);
+    if (mainImg && 'ResizeObserver' in window) {
+      const resizeWatch = new ResizeObserver(() => {
+        if (!mainImg.isConnected) resizeWatch.disconnect();
+        else updateDrinkwarePreview();
+      });
+      resizeWatch.observe(mainImg);
+    }
+  }
   document.querySelectorAll('.print-color-swatch').forEach(button => {
     button.addEventListener('click', () => {
       document.querySelectorAll('.print-color-swatch').forEach(swatch => {

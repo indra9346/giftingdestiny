@@ -4955,59 +4955,6 @@ textarea.form-control {
   .footer-developer-logo { width: 148px; max-width: 48vw; max-height: 40px; }
 }
 
-.footer-heartbeat {
-  position: relative;
-  z-index: 0;
-  display: inline-grid;
-  place-items: center;
-  width: 1.4rem;
-  height: 1.4rem;
-  font-size: 1.05rem;
-  line-height: 1;
-  transform-origin: center;
-  animation: footer-heart-beat 1.15s ease-in-out infinite;
-}
-
-.footer-heartbeat::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  left: 50%;
-  top: 50%;
-  width: 2.7rem;
-  height: 2.4rem;
-  border-radius: 48% 52% 45% 55%;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(185, 28, 28, .72) 0 13%, transparent 16%),
-    radial-gradient(circle at 13% 25%, #ef4444 0 2px, transparent 3px),
-    radial-gradient(circle at 84% 21%, #dc2626 0 2px, transparent 3px),
-    radial-gradient(circle at 8% 68%, #b91c1c 0 1.5px, transparent 2.5px),
-    radial-gradient(circle at 92% 72%, #ef4444 0 1.5px, transparent 2.5px),
-    radial-gradient(circle at 28% 6%, #dc2626 0 1px, transparent 2px),
-    radial-gradient(circle at 71% 94%, #b91c1c 0 1px, transparent 2px);
-  filter: blur(.25px);
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(.25);
-  transform-origin: center;
-  animation: footer-heart-splash 1.15s ease-out infinite;
-  pointer-events: none;
-}
-
-@keyframes footer-heart-beat {
-  0%, 100% { transform: scale(1); }
-  12% { transform: scale(1.16); }
-  24% { transform: scale(.98); }
-  36% { transform: scale(1.2); }
-  52% { transform: scale(1); }
-}
-
-@keyframes footer-heart-splash {
-  0%, 24%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(.25); }
-  34% { opacity: .9; transform: translate(-50%, -50%) scale(1.12); }
-  52% { opacity: .45; transform: translate(-50%, -50%) scale(1.28); }
-  68% { opacity: 0; transform: translate(-50%, -50%) scale(1.42); }
-}
-
 /* Floating WhatsApp / Contact Pill (Screenshots 1, 2, 5) */
 .floating-contact-pill {
   position: fixed;
