@@ -1,0 +1,464 @@
+/* ==========================================================================
+   STOREFRONT: photo loading feedback + header brand cloth
+   ========================================================================== */
+
+/* ---------- Photos shimmer until decoded, then fade in ---------- */
+.product-card-img-wrap,
+.slide-card-img-wrap {
+  background-color: #eef1f5;
+  background-image: linear-gradient(100deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.75) 50%, rgba(255, 255, 255, 0) 70%);
+  background-size: 250% 100%;
+  background-repeat: no-repeat;
+  animation: gdPhotoShimmer 1.25s linear infinite;
+}
+
+.product-card-img-wrap.photo-ready,
+.slide-card-img-wrap.photo-ready {
+  animation: none;
+  background-image: none;
+}
+
+.product-card-img,
+.slide-card-img {
+  opacity: 0;
+  transition: opacity 0.45s ease, transform 0.4s ease;
+}
+
+.photo-ready > .product-card-img,
+.photo-ready > .slide-card-img {
+  opacity: 1;
+}
+
+.photo-instant > .product-card-img,
+.photo-instant > .slide-card-img {
+  transition: transform 0.4s ease;
+}
+
+@keyframes gdPhotoShimmer {
+  from { background-position: 130% 0; }
+  to { background-position: -130% 0; }
+}
+
+/* ---------- First-screen photo progress bar ---------- */
+#gd-photo-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 1300;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+#gd-photo-progress.is-active {
+  opacity: 1;
+}
+
+#gd-photo-progress > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #800020, #d4af37, #fff2c4);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
+  transform: scaleX(0.08);
+  transform-origin: 0 50%;
+  transition: transform 0.35s ease;
+}
+
+/* ---------- Header brand cloth (pulled out of the GD logo) ---------- */
+#gd-cloth-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  pointer-events: none;
+  display: none;
+}
+
+#gd-cloth-layer.is-on {
+  display: block;
+}
+
+html.gd-reel-on .site-header .brand-logo-img {
+  visibility: hidden;
+}
+
+/* Clip window: starts at the reel's centre so the cloth comes out of it. */
+.gd-cloth {
+  position: fixed;
+  overflow: hidden;
+  transform-origin: 0 50%;
+}
+
+/* A held cloth sways a little from the reel. */
+#gd-cloth-layer.is-holding .gd-cloth {
+  animation: gdClothSway 2.6s ease-in-out infinite;
+}
+
+@keyframes gdClothSway {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  30% { transform: translateY(0.8px) rotate(0.18deg); }
+  70% { transform: translateY(-0.6px) rotate(-0.12deg); }
+}
+
+.gd-cloth-face {
+  position: absolute;
+  inset: 0 auto 0 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 0 8px 8px 0;
+  /* Midnight-navy satin with curved light falling from top to bottom. */
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0) 24%, rgba(0, 0, 0, 0) 58%, rgba(0, 0, 0, 0.32) 100%),
+    linear-gradient(180deg, #121d3f 0%, #22346b 30%, #2c4182 46%, #1b2a58 70%, #0d1631 100%);
+  box-shadow:
+    0 9px 14px -8px rgba(8, 14, 34, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.3);
+  transform: translate3d(-100%, 0, 0);
+  will-change: transform;
+}
+
+/* Woven texture */
+.gd-cloth-face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.1) 0 1px, transparent 1px 3px);
+  pointer-events: none;
+}
+
+/* Soft folds drifting along the cloth */
+.gd-cloth-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-linear-gradient(90deg,
+    rgba(255, 255, 255, 0) 0px,
+    rgba(255, 255, 255, 0.16) 34px,
+    rgba(255, 255, 255, 0) 70px,
+    rgba(0, 4, 16, 0.28) 120px,
+    rgba(255, 255, 255, 0) 170px);
+  background-size: 300px 100%;
+  animation: gdClothFolds 2.8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes gdClothFolds {
+  from { background-position: 0 0; }
+  to { background-position: 300px 0; }
+}
+
+.gd-cloth-print {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  height: 100%;
+  padding: 0 calc(var(--cloth-h) * 1.05 + 10px) 0 calc(var(--reel-r) + 8px);
+  white-space: nowrap;
+  color: #fff4d6;
+  text-shadow: 0 1px 1px rgba(5, 10, 28, 0.6);
+  /* Gold stitching along both hems */
+  background:
+    linear-gradient(90deg, rgba(246, 220, 140, 0.85) 50%, transparent 50%) left 4px / 9px 1.5px repeat-x,
+    linear-gradient(90deg, rgba(246, 220, 140, 0.85) 50%, transparent 50%) left calc(100% - 4px) / 9px 1.5px repeat-x;
+}
+
+.gd-cloth-badge {
+  flex: none;
+  width: calc(var(--cloth-h) * 0.68);
+  height: calc(var(--cloth-h) * 0.68);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(246, 220, 140, 0.85), 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+.gd-cloth-stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.1;
+}
+
+.gd-cloth-name {
+  font-family: var(--font-cinzel, 'Cinzel', serif);
+  font-weight: 800;
+  font-size: calc(var(--cloth-h) * 0.36);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #fff6d8, #f1cf6b 55%, #c99a2e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+
+.gd-cloth-sub {
+  display: none;
+  font-family: var(--font-body, sans-serif);
+  font-weight: 700;
+  font-size: calc(var(--cloth-h) * 0.26);
+  letter-spacing: 0.02em;
+}
+
+.gd-cloth-script {
+  font-family: var(--font-script, 'Dancing Script', cursive);
+  font-weight: 700;
+  font-size: calc(var(--cloth-h) * 0.42);
+  color: #ffe9b0;
+}
+
+.gd-cloth-item {
+  font-family: var(--font-body, sans-serif);
+  font-weight: 700;
+  font-size: calc(var(--cloth-h) * 0.3);
+  letter-spacing: 0.03em;
+}
+
+.gd-cloth-sep {
+  color: #f6dc8c;
+  font-size: calc(var(--cloth-h) * 0.3);
+}
+
+.gd-cloth-phone {
+  margin-left: auto;
+}
+
+/* Show only what fits between the logo and the header icons */
+#gd-cloth-layer[data-tier="xs"] .tier-m,
+#gd-cloth-layer[data-tier="xs"] .tier-l,
+#gd-cloth-layer[data-tier="xs"] .tier-xl,
+#gd-cloth-layer[data-tier="s"] .tier-m,
+#gd-cloth-layer[data-tier="s"] .tier-l,
+#gd-cloth-layer[data-tier="s"] .tier-xl,
+#gd-cloth-layer[data-tier="m"] .tier-l,
+#gd-cloth-layer[data-tier="m"] .tier-xl,
+#gd-cloth-layer[data-tier="l"] .tier-xl {
+  display: none;
+}
+
+#gd-cloth-layer[data-tier="s"] .gd-cloth-sub {
+  display: block;
+}
+
+#gd-cloth-layer[data-tier="xs"] .gd-cloth-name,
+#gd-cloth-layer[data-tier="s"] .gd-cloth-name {
+  font-size: calc(var(--cloth-h) * 0.3);
+}
+
+/* Gold metal end tag with the GD mark: it is what reaches the icons. */
+.gd-cloth-tag {
+  position: absolute;
+  right: 0;
+  top: -1px;
+  bottom: -1px;
+  width: calc(var(--cloth-h) * 1.05);
+  display: grid;
+  place-items: center;
+  border-radius: 4px 9px 9px 4px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 35%, rgba(0, 0, 0, 0) 65%, rgba(0, 0, 0, 0.25) 100%),
+    linear-gradient(90deg, #8a6114 0%, #d4af37 25%, #f7e3a1 50%, #c99a2e 75%, #7a5410 100%);
+  box-shadow: -2px 0 4px rgba(0, 0, 0, 0.35), 0 3px 6px rgba(40, 20, 0, 0.4), inset 0 0 0 1px rgba(255, 245, 210, 0.5);
+}
+
+.gd-cloth-tag img {
+  width: calc(var(--cloth-h) * 0.66);
+  height: calc(var(--cloth-h) * 0.66);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 1.5px rgba(122, 84, 16, 0.6);
+}
+
+/* The reel: a copy of the header logo that turns as the cloth moves. */
+.gd-reel {
+  position: fixed;
+  z-index: 2;
+  border-radius: 50%;
+}
+
+.gd-reel img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.gd-reel-spool {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid #d4af37;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-card-img-wrap,
+  .slide-card-img-wrap {
+    animation: none;
+  }
+
+  #gd-cloth-layer {
+    display: none !important;
+  }
+}
+
+/* Narrowest phones: the end tag carries the GD mark, the name sits on two lines. */
+#gd-cloth-layer[data-tier="xs"] .gd-cloth-badge {
+  display: none;
+}
+
+#gd-cloth-layer[data-tier="xs"] .gd-cloth-name {
+  white-space: normal;
+  width: min-content;
+  line-height: 1.02;
+  font-size: calc(var(--cloth-h) * 0.32);
+  letter-spacing: 0.06em;
+}
+
+#gd-cloth-layer[data-tier="xs"] .gd-cloth-print {
+  gap: 0.4rem;
+  padding-right: calc(var(--cloth-h) * 0.9 + 6px);
+}
+
+#gd-cloth-layer[data-tier="xs"] .gd-cloth-tag {
+  width: calc(var(--cloth-h) * 0.9);
+}
+
+/* ---------- Mug name preview: placed per photo by placeMugPrint() ---------- */
+.has-print-preview .drinkware-print-preview {
+  left: 0;
+  top: 0;
+  width: auto;
+  max-height: none;
+  overflow: visible;
+  display: block;
+  padding: 0;
+  white-space: pre;
+  line-height: 1.08;
+  text-align: center;
+  overflow-wrap: normal;
+  opacity: 0.9;
+  mix-blend-mode: multiply;
+  text-shadow: none;
+  transform-origin: 50% 50%;
+}
+
+.drinkware-print-probe {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  visibility: hidden;
+  white-space: pre;
+  font-size: 100px;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.drinkware-print-probe[data-print-style="sans"] {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.drinkware-print-probe[data-print-style="script"] {
+  font-family: "Brush Script MT", "Segoe Script", cursive;
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* The photo stays still while a name is shown so the print stays on the mug. */
+.has-print-preview .pdp-main-img:hover {
+  transform: none;
+}
+
+/* ---------- Footer credit: gold sparks rise from the bottom, both sides ---------- */
+.footer-heart {
+  width: 1.3rem;
+  height: 1.3rem;
+  overflow: visible;
+  vertical-align: -0.28em;
+  margin: 0 0.15rem;
+}
+
+.footer-developer-mark {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+}
+
+.footer-baba-sparks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.footer-gold-spark {
+  stroke-dasharray: 28 100;
+  stroke-dashoffset: 28;
+  filter: drop-shadow(0 0 1.5px rgba(250, 204, 21, 0.95));
+  animation: gdFooterSpark 1.8s linear infinite;
+}
+
+@keyframes gdFooterSpark {
+  0% { stroke-dashoffset: 28; opacity: 0; }
+  8% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { stroke-dashoffset: -100; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-gold-spark {
+    animation: none;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* ---------- Phones: product breadcrumb wraps instead of scrolling with a bar ---------- */
+@media (max-width: 768px) {
+  .product-detail-page .product-breadcrumb {
+    overflow: hidden !important;
+    white-space: normal !important;
+    flex-wrap: wrap !important;
+    padding-bottom: 0 !important;
+    scrollbar-width: none;
+  }
+
+  .product-detail-page .product-breadcrumb::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product-detail-page .breadcrumb-current {
+    flex: 1 1 100%;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: normal;
+  }
+}
+
+/* While the cloth is out, the header text and search it passes over fade
+   away so nothing peeks out above or below it; they return as it winds in. */
+.site-header .brand-text,
+.site-header .header-search-box {
+  transition: opacity 0.35s ease;
+}
+
+html.gd-reel-on .site-header .brand-text,
+html.gd-reel-on .site-header .header-search-box {
+  opacity: 0;
+}

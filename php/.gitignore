@@ -1,0 +1,4 @@
+app/config.local.php
+app/storage/*.sqlite
+app/storage/*.sqlite-*
+gd-uploads/blogs/20*/
