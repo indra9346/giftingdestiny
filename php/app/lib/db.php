@@ -135,4 +135,22 @@ function db_seed(PDO $pdo): void
         $stmt = $pdo->prepare('INSERT INTO admins (username, password_hash, created_at) VALUES (?, ?, ?)');
         $stmt->execute([GD_ADMIN_INITIAL_USER, GD_ADMIN_INITIAL_HASH, now_iso()]);
     }
+
+    // Login reset: set a new GD_ADMIN_RESET_KEY in config.local.php (with the wanted user + hash) and the
+    // first admin gets that username and password once, and wrong-password locks are cleared.
+    if (defined('GD_ADMIN_RESET_KEY') && GD_ADMIN_RESET_KEY !== '' && GD_ADMIN_INITIAL_USER !== '' && GD_ADMIN_INITIAL_HASH !== '') {
+        $done = $pdo->query("SELECT value FROM settings WHERE key = 'admin_reset_key'")->fetchColumn();
+        if ($done !== GD_ADMIN_RESET_KEY) {
+            $pdo->beginTransaction();
+            $id = $pdo->query('SELECT id FROM admins ORDER BY id LIMIT 1')->fetchColumn();
+            if ($id) {
+                $pdo->prepare('UPDATE admins SET username = ?, password_hash = ? WHERE id = ?')->execute([GD_ADMIN_INITIAL_USER, GD_ADMIN_INITIAL_HASH, $id]);
+            } else {
+                $pdo->prepare('INSERT INTO admins (username, password_hash, created_at) VALUES (?, ?, ?)')->execute([GD_ADMIN_INITIAL_USER, GD_ADMIN_INITIAL_HASH, now_iso()]);
+            }
+            $pdo->exec('DELETE FROM login_attempts WHERE success = 0');
+            $pdo->prepare("INSERT OR REPLACE INTO settings (key, value) VALUES ('admin_reset_key', ?)")->execute([GD_ADMIN_RESET_KEY]);
+            $pdo->commit();
+        }
+    }
 }
