@@ -1,0 +1,23 @@
+# Gifting Destiny PHP website (use this file when the site is NOT sharing its folder with WordPress).
+# Beside WordPress, add the block from README-DEPLOY.txt to the top of WordPress's .htaccess instead.
+Options -Indexes
+DirectoryIndex gd-index.php index.php index.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^app(/|$) - [F,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ gd-index.php [L,QSA]
+</IfModule>
+
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType text/css "access plus 30 days"
+ExpiresByType application/javascript "access plus 30 days"
+ExpiresByType image/webp "access plus 60 days"
+ExpiresByType image/jpeg "access plus 60 days"
+ExpiresByType image/png "access plus 60 days"
+ExpiresByType video/mp4 "access plus 60 days"
+</IfModule>

@@ -1,0 +1,11 @@
+# Pictures uploaded in the admin panel. Nothing here may run as a program.
+Options -Indexes -ExecCGI
+<FilesMatch "(?i)\.(php[0-9]?|phtml|phar|pht|pl|py|cgi|sh|shtml|asp|aspx|jsp|htaccess|svg|html?)$">
+<IfModule mod_authz_core.c>
+Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+Order allow,deny
+Deny from all
+</IfModule>
+</FilesMatch>

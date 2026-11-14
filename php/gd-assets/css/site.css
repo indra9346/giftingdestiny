@@ -1,0 +1,202 @@
+/* Additions for the PHP version of the site (the other stylesheets are the original site's, unchanged). */
+
+/* ---------- Blogs button: always in the top header row, on phones too ---------- */
+.header-blogs-btn {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  padding: 0.5rem 1.05rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: #3b2a07;
+  text-decoration: none;
+  white-space: nowrap;
+  background: linear-gradient(120deg, #f8e7b0, #e9c766 45%, #fff3cc 60%, #d9b24a);
+  background-size: 220% 100%;
+  border: 1px solid rgba(168, 118, 27, 0.5);
+  box-shadow: 0 6px 16px -8px rgba(168, 118, 27, 0.7);
+  animation: gdbPillShine 5s ease-in-out infinite;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.header-blogs-btn:hover,
+.header-blogs-btn:focus-visible,
+.header-blogs-btn.active {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px -8px rgba(168, 118, 27, 0.85);
+  color: #1f1604;
+}
+
+.header-blogs-btn.active {
+  outline: 2px solid rgba(128, 0, 32, 0.4);
+  outline-offset: 2px;
+}
+
+.header-blogs-icon {
+  display: inline-flex;
+  color: #800020;
+}
+
+.header-blogs-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 768px) {
+  /* The brand name gives way to the Blogs button instead of running underneath it. */
+  .site-header .brand-logo { overflow: hidden; }
+  .site-header .brand-text { overflow: hidden; }
+  .site-header .brand-title,
+  .site-header .brand-tagline { display: block; overflow: hidden; text-overflow: ellipsis; }
+
+  .header-blogs-btn {
+    padding: 0.42rem 0.62rem;
+    gap: 0.28rem;
+    font-size: 0.78rem;
+    margin-right: 0.15rem;
+  }
+
+  .header-blogs-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+@media (max-width: 400px) {
+  /* Small phones: tighten the icons so "Gifting Destiny" still fits beside Blogs. */
+  .site-header .header-container { padding-inline: 0.65rem; gap: 0.3rem; }
+  .site-header .brand-logo { gap: 0.38rem; }
+  .site-header .brand-logo .brand-logo-img { flex-basis: 36px; width: 36px; height: 36px; }
+  .header-actions .action-btn,
+  .header-actions .mobile-menu-btn { min-width: 30px; padding: 0.26rem; }
+  .header-actions .cart-action-btn { padding: 0.3rem; }
+
+  .header-blogs-btn {
+    padding: 0.36rem 0.48rem;
+    font-size: 0.72rem;
+    margin-right: 0.05rem;
+  }
+
+  .header-blogs-icon {
+    display: none;
+  }
+
+  .brand-tagline {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-blogs-btn {
+    animation: none;
+  }
+}
+
+/* While the header cloth plays it covers the header row up to the first action; keep Blogs readable above it. */
+html.gd-reel-on .header-blogs-btn {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- Things the single-page app used to add/remove with script ---------- */
+.cart-place-order[hidden],
+.product-card[hidden] {
+  display: none !important;
+}
+
+.product-card-title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.product-card-title-link:hover {
+  color: inherit;
+}
+
+/* Spam trap on the forms (kept off-screen for people). */
+.gd-hp-field {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.gd-form-error {
+  margin: 0.5rem 0 0.25rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 10px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+button[aria-busy="true"] {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+/* ---------- Blog posts written in the admin editor ---------- */
+.gdb-video-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 1.5rem 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0f172a;
+}
+
+.gdb-video-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.gdb-article-body img[style*="float: left"] {
+  margin: 0.35rem 1.25rem 0.85rem 0;
+  max-width: 50%;
+}
+
+.gdb-article-body img[style*="float: right"] {
+  margin: 0.35rem 0 0.85rem 1.25rem;
+  max-width: 50%;
+}
+
+.gdb-article-body pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 10px;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 0.88rem;
+}
+
+.gdb-preview-banner {
+  position: relative;
+  z-index: 5;
+  padding: 0.7rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #7c2d12;
+  background: #ffedd5;
+  border-bottom: 1px solid #fdba74;
+}
+
+@media (max-width: 640px) {
+  .gdb-article-body img[style*="float"] {
+    float: none !important;
+    max-width: 100%;
+    margin: 1rem 0;
+  }
+}
